@@ -61,3 +61,31 @@ func Difference[T typesx.All1](a, b []T) []T {
 	}
 	return result
 }
+
+// IsIn 判断元素是否在数组中
+func IsIn[T typesx.All1](a []T, b T) bool {
+	for _, v := range a {
+		if v == b {
+			return true
+		}
+	}
+	return false
+}
+
+// Delete 删除数组中的元素
+func Delete[T typesx.All1](a []T, b ...T) []T {
+	for _, v := range b {
+		for i, vv := range a {
+			if vv == v {
+				a = append(a[:i], a[i+1:]...)
+			}
+		}
+	}
+	return a
+}
+
+// DeleteByIndex 删除数组中的元素
+func DeleteByIndex[T typesx.All1](a []T, b int) []T {
+	a = append(a[:b], a[b+1:]...)
+	return a
+}
