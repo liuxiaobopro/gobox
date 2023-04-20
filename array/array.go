@@ -1,7 +1,7 @@
 package array
 
 import (
-	typesx "github.com/liuxiaobopro/golib/types"
+	typesx "github.com/liuxiaobopro/gobox/types"
 )
 
 // Union 并集

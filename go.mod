@@ -1,3 +1,3 @@
-module github.com/liuxiaobopro/golib
+module github.com/liuxiaobopro/gobox
 
 go 1.18

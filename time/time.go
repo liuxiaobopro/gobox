@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	definex "github.com/liuxiaobopro/golib/define"
+	definex "github.com/liuxiaobopro/gobox/define"
 )
 
 type JsonTime time.Time
