@@ -1,11 +1,13 @@
 package log
 
-import "fmt"
+import (
+	"github.com/zeromicro/go-zero/core/logx"
+)
 
 func Infof(format string, a ...any) {
-	_, _ = fmt.Printf(format, a...)
+	logx.Infof(format, a...)
 }
 
 func Errorf(format string, a ...any) {
-	_ = fmt.Errorf(format, a...)
+	logx.Errorf(format, a...)
 }
