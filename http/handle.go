@@ -52,6 +52,6 @@ func (*GinHandle) RetuenOk(c *gin.Context, data interface{}) {
 }
 
 // ReturnErr 返回错误json
-func (*GinHandle) ReturnErr(c *gin.Context, r respx.T) {
+func (*GinHandle) ReturnErr(c *gin.Context, r respx.Pt) {
 	c.JSON(http.StatusBadRequest, r)
 }
