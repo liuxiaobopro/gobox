@@ -8,6 +8,20 @@ type T struct {
 	Data interface{} `json:"data"`
 }
 
+var (
+	SuccT        = T{Code: SuccErrCode, Msg: ErrCodeMsg[SuccErrCode], Data: nil}
+	FailT        = T{Code: FailErrCode, Msg: ErrCodeMsg[FailErrCode], Data: nil}
+	InternalErrT = T{Code: InternalErrCode, Msg: ErrCodeMsg[InternalErrCode], Data: nil}
+	ParamErrT    = T{Code: ParamErrCode, Msg: ErrCodeMsg[ParamErrCode], Data: nil}
+	AuthErrT     = T{Code: AuthErrCode, Msg: ErrCodeMsg[AuthErrCode], Data: nil}
+	PermErrT     = T{Code: PermErrCode, Msg: ErrCodeMsg[PermErrCode], Data: nil}
+	ExistErrT    = T{Code: ExistErrCode, Msg: ErrCodeMsg[ExistErrCode], Data: nil}
+	NotFoundErrT = T{Code: NotFoundErrCode, Msg: ErrCodeMsg[NotFoundErrCode], Data: nil}
+	LimitErrT    = T{Code: LimitErrCode, Msg: ErrCodeMsg[LimitErrCode], Data: nil}
+	TimeoutErrT  = T{Code: TimeoutErrCode, Msg: ErrCodeMsg[TimeoutErrCode], Data: nil}
+	OtherErrT    = T{Code: OtherErrCode, Msg: ErrCodeMsg[OtherErrCode], Data: nil}
+)
+
 const (
 	SuccErrCode RespCode = iota
 	FailErrCode          // 1
