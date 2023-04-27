@@ -1,6 +1,7 @@
 package http
 
 import (
+	"mime/multipart"
 	"net/http"
 
 	respx "github.com/liuxiaobopro/gobox/resp"
@@ -33,6 +34,11 @@ func (*GinHandle) Query(c *gin.Context, key string) string {
 // DefaultQuery 获取get参数，如果没有则返回默认值
 func (*GinHandle) DefaultQuery(c *gin.Context, key string, defaultValue string) string {
 	return c.DefaultQuery(key, defaultValue)
+}
+
+// FormFile 获取上传文件
+func (*GinHandle) FormFile(c *gin.Context, key string) (*multipart.FileHeader, error) {
+	return c.FormFile(key)
 }
 
 // ReturnJSON 返回json

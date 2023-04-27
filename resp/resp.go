@@ -8,18 +8,20 @@ type T struct {
 	Data interface{} `json:"data"`
 }
 
+type Pt *T
+
 var (
-	SuccT        = T{Code: SuccErrCode, Msg: ErrCodeMsg[SuccErrCode], Data: nil}
-	FailT        = T{Code: FailErrCode, Msg: ErrCodeMsg[FailErrCode], Data: nil}
-	InternalErrT = T{Code: InternalErrCode, Msg: ErrCodeMsg[InternalErrCode], Data: nil}
-	ParamErrT    = T{Code: ParamErrCode, Msg: ErrCodeMsg[ParamErrCode], Data: nil}
-	AuthErrT     = T{Code: AuthErrCode, Msg: ErrCodeMsg[AuthErrCode], Data: nil}
-	PermErrT     = T{Code: PermErrCode, Msg: ErrCodeMsg[PermErrCode], Data: nil}
-	ExistErrT    = T{Code: ExistErrCode, Msg: ErrCodeMsg[ExistErrCode], Data: nil}
-	NotFoundErrT = T{Code: NotFoundErrCode, Msg: ErrCodeMsg[NotFoundErrCode], Data: nil}
-	LimitErrT    = T{Code: LimitErrCode, Msg: ErrCodeMsg[LimitErrCode], Data: nil}
-	TimeoutErrT  = T{Code: TimeoutErrCode, Msg: ErrCodeMsg[TimeoutErrCode], Data: nil}
-	OtherErrT    = T{Code: OtherErrCode, Msg: ErrCodeMsg[OtherErrCode], Data: nil}
+	SuccT        = &T{Code: SuccErrCode, Msg: ErrCodeMsg[SuccErrCode], Data: nil}
+	FailT        = &T{Code: FailErrCode, Msg: ErrCodeMsg[FailErrCode], Data: nil}
+	InternalErrT = &T{Code: InternalErrCode, Msg: ErrCodeMsg[InternalErrCode], Data: nil}
+	ParamErrT    = &T{Code: ParamErrCode, Msg: ErrCodeMsg[ParamErrCode], Data: nil}
+	AuthErrT     = &T{Code: AuthErrCode, Msg: ErrCodeMsg[AuthErrCode], Data: nil}
+	PermErrT     = &T{Code: PermErrCode, Msg: ErrCodeMsg[PermErrCode], Data: nil}
+	ExistErrT    = &T{Code: ExistErrCode, Msg: ErrCodeMsg[ExistErrCode], Data: nil}
+	NotFoundErrT = &T{Code: NotFoundErrCode, Msg: ErrCodeMsg[NotFoundErrCode], Data: nil}
+	LimitErrT    = &T{Code: LimitErrCode, Msg: ErrCodeMsg[LimitErrCode], Data: nil}
+	TimeoutErrT  = &T{Code: TimeoutErrCode, Msg: ErrCodeMsg[TimeoutErrCode], Data: nil}
+	OtherErrT    = &T{Code: OtherErrCode, Msg: ErrCodeMsg[OtherErrCode], Data: nil}
 )
 
 const (
@@ -67,88 +69,88 @@ func (r T) GetData() interface{} {
 	return r.Data
 }
 
-func Succ(data interface{}) T {
-	return T{
+func Succ(data interface{}) Pt {
+	return &T{
 		Code: SuccErrCode,
 		Msg:  ErrCodeMsg[SuccErrCode],
 		Data: data,
 	}
 }
 
-func Fail() T {
-	return T{
+func Fail() Pt {
+	return &T{
 		Code: FailErrCode,
 		Msg:  ErrCodeMsg[FailErrCode],
 		Data: nil,
 	}
 }
 
-func InternalErr() T {
-	return T{
+func InternalErr() Pt {
+	return &T{
 		Code: InternalErrCode,
 		Msg:  ErrCodeMsg[InternalErrCode],
 		Data: nil,
 	}
 }
 
-func ParamErr() T {
-	return T{
+func ParamErr() Pt {
+	return &T{
 		Code: ParamErrCode,
 		Msg:  ErrCodeMsg[ParamErrCode],
 		Data: nil,
 	}
 }
 
-func AuthErr() T {
-	return T{
+func AuthErr() Pt {
+	return &T{
 		Code: AuthErrCode,
 		Msg:  ErrCodeMsg[AuthErrCode],
 		Data: nil,
 	}
 }
 
-func PermErr() T {
-	return T{
+func PermErr() Pt {
+	return &T{
 		Code: PermErrCode,
 		Msg:  ErrCodeMsg[PermErrCode],
 		Data: nil,
 	}
 }
 
-func ExistErr() T {
-	return T{
+func ExistErr() Pt {
+	return &T{
 		Code: ExistErrCode,
 		Msg:  ErrCodeMsg[ExistErrCode],
 		Data: nil,
 	}
 }
 
-func NotFoundErr() T {
-	return T{
+func NotFoundErr() Pt {
+	return &T{
 		Code: NotFoundErrCode,
 		Msg:  ErrCodeMsg[NotFoundErrCode],
 		Data: nil,
 	}
 }
 
-func LimitErr() T {
-	return T{
+func LimitErr() Pt {
+	return &T{
 		Code: LimitErrCode,
 		Msg:  ErrCodeMsg[LimitErrCode],
 		Data: nil,
 	}
 }
 
-func TimeoutErr() T {
-	return T{
+func TimeoutErr() Pt {
+	return &T{
 		Code: TimeoutErrCode,
 		Msg:  ErrCodeMsg[TimeoutErrCode],
 		Data: nil,
 	}
 }
 
-func OtherErr() T {
-	return T{
+func OtherErr() Pt {
+	return &T{
 		Code: OtherErrCode,
 		Msg:  ErrCodeMsg[OtherErrCode],
 		Data: nil,
