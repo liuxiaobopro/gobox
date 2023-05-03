@@ -69,8 +69,9 @@ func (r T) GetData() interface{} {
 	return r.Data
 }
 
-func (r T) ToPt() Pt {
-	return &r
+func (r T) ToPt() *Pt {
+	Pt := Pt(&r)
+	return &Pt
 }
 
 func Succ(data interface{}) Pt {
