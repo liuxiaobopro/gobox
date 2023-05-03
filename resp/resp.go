@@ -69,6 +69,10 @@ func (r T) GetData() interface{} {
 	return r.Data
 }
 
+func (r T) ToPt() Pt {
+	return &r
+}
+
 func Succ(data interface{}) Pt {
 	return &T{
 		Code: SuccErrCode,
