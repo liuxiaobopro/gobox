@@ -13,12 +13,12 @@ type GinHandle struct{}
 
 // ShouldBind Get绑定到结构体
 func (*GinHandle) ShouldBind(c *gin.Context, s interface{}) error {
-	return c.ShouldBind(&s)
+	return c.ShouldBind(s)
 }
 
 // ShouldBindJSON Post绑定到结构体
 func (*GinHandle) ShouldBindJSON(c *gin.Context, s interface{}) error {
-	return c.ShouldBindJSON(&s)
+	return c.ShouldBindJSON(s)
 }
 
 // Param 获取路由参数
@@ -52,6 +52,6 @@ func (*GinHandle) RetuenOk(c *gin.Context, data interface{}) {
 }
 
 // ReturnErr 返回错误json
-func (*GinHandle) ReturnErr(c *gin.Context, r respx.Pt) {
+func (*GinHandle) ReturnErr(c *gin.Context, r *respx.Pt) {
 	c.JSON(http.StatusBadRequest, r)
 }
