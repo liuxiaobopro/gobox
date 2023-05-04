@@ -1,8 +1,10 @@
 package file
 
-import "testing"
+import (
+	"testing"
+)
 
-func TestAppendFile(t *testing.T) {
+func TestAppend(t *testing.T) {
 	type args struct {
 		path    string
 		content string
@@ -16,8 +18,8 @@ func TestAppendFile(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := AppendFile(tt.args.path, tt.args.content); (err != nil) != tt.wantErr {
-				t.Errorf("AppendFile() error = %v, wantErr %v", err, tt.wantErr)
+			if err := Append(tt.args.path, tt.args.content); (err != nil) != tt.wantErr {
+				t.Errorf("Append() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}

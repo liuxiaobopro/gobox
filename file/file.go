@@ -39,8 +39,8 @@ func ReplaceInDir(dirPath, oldStr, newStr string) error {
 	return err
 }
 
-// AppendFile 往文件内追加内容
-func AppendFile(path string, content string) error {
+// Append 往文件内追加内容
+func Append(path string, content string) error {
 	file, err := os.OpenFile(path, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
 		return err
