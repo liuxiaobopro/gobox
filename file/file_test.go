@@ -24,3 +24,31 @@ func TestAppend(t *testing.T) {
 		})
 	}
 }
+
+func TestHas(t *testing.T) {
+	type args struct {
+		path    string
+		content string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    bool
+		wantErr bool
+	}{
+		{"test1", args{"./test.txt", "test"}, true, false},
+		{"test2", args{"./test.txt", "test1"}, false, false},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := Has(tt.args.path, tt.args.content)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("Has() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if got != tt.want {
+				t.Errorf("Has() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

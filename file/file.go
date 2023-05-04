@@ -55,3 +55,21 @@ func Append(path string, content string) error {
 	writer.Flush()
 	return nil
 }
+
+// Has 判断文件内容是否包含某个字符串
+func Has(path string, content string) (bool, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return false, err
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		if strings.Contains(scanner.Text(), content) {
+			return true, nil
+		}
+	}
+
+	return false, nil
+}
