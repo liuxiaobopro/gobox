@@ -119,3 +119,59 @@ func TestIsSuffix(t *testing.T) {
 		})
 	}
 }
+
+func TestReplaceCharAfterSpecifiedCharUp(t *testing.T) {
+	type args struct {
+		s string
+		c string
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{
+			name: "test1",
+			args: args{
+				s: "abc/def/ghi",
+				c: "/",
+			},
+			want: "AbcDefGhi",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := ReplaceCharAfterSpecifiedCharUp(tt.args.s, tt.args.c); got != tt.want {
+				t.Errorf("ReplaceCharAfterSpecifiedCharUp() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestReplaceCharAfterSpecifiedCharLow(t *testing.T) {
+	type args struct {
+		s string
+		c string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		wantOut string
+	}{
+		{
+			name: "test1",
+			args: args{
+				s: "abc/def/ghi",
+				c: "/",
+			},
+			wantOut: "abcDefGhi",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if gotOut := ReplaceCharAfterSpecifiedCharLow(tt.args.s, tt.args.c); gotOut != tt.wantOut {
+				t.Errorf("ReplaceCharAfterSpecifiedCharLow() = %v, want %v", gotOut, tt.wantOut)
+			}
+		})
+	}
+}

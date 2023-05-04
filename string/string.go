@@ -68,3 +68,37 @@ func CutEndString(s string, c rune) string {
 	}
 	return s[i+1:]
 }
+
+// FirstUp 首字母大写
+func FirstUp(s string) string {
+	if len(s) == 0 {
+		return ""
+	}
+	return strings.ToUpper(s[0:1]) + s[1:]
+}
+
+// ReplaceCharAfterSpecifiedCharUp 替换指定字符后面的字符为大驼峰
+// 例如：ReplaceCharAfterSpecifiedCharUp("abc/def/ghi", '/') => "AbcDefGhi"
+func ReplaceCharAfterSpecifiedCharUp(s, c string) (out string) {
+	arr := strings.Split(s, c)
+	for _, v := range arr {
+		v = strings.ToLower(v)
+		out += FirstUp(v)
+	}
+	return
+}
+
+// ReplaceCharAfterSpecifiedCharLow 替换指定字符后面的字符为小驼峰
+// 例如：ReplaceCharAfterSpecifiedCharLow("abc/def/ghi", '/') => "abcDefGhi"
+func ReplaceCharAfterSpecifiedCharLow(s, c string) (out string) {
+	arr := strings.Split(s, c)
+	for k, v := range arr {
+		if k == 0 {
+			out += v
+			continue
+		}
+		v = strings.ToLower(v)
+		out += FirstUp(v)
+	}
+	return
+}
