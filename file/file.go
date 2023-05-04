@@ -7,6 +7,7 @@ import (
 	"strings"
 )
 
+// ReplaceInDir 替换目录下所有文件中的字符串
 func ReplaceInDir(dirPath, oldStr, newStr string) error {
 	err := filepath.Walk(dirPath, func(path string, info os.FileInfo, err error) error {
 		if err != nil {

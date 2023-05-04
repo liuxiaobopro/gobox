@@ -1,5 +1,7 @@
 package string
 
+import "strings"
+
 // Has 判断字符串是否存在某个字符
 func Has(s string, c byte) bool {
 	for i := 0; i < len(s); i++ {
@@ -45,4 +47,24 @@ func Count(s string, c byte) int {
 		}
 	}
 	return count
+}
+
+// CutStartString 截取字符串中最后一个字符之前的字符串
+// 例如：CutStartString("abc/def/ghi", '/') => "abc/def/"
+func CutStartString(s string, c rune) string {
+	i := strings.LastIndex(s, string(c))
+	if i == -1 {
+		return s
+	}
+	return s[0 : i+1]
+}
+
+// CutEndString 截取字符串中最后一个字符之后的字符串
+// 例如：CutEndString("abc/def/ghi", '/') => "ghi"
+func CutEndString(s string, c rune) string {
+	i := strings.LastIndex(s, string(c))
+	if i == -1 {
+		return ""
+	}
+	return s[i+1:]
 }
