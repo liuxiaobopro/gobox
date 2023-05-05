@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 )
 
@@ -72,4 +73,14 @@ func Has(path string, content string) (bool, error) {
 	}
 
 	return false, nil
+}
+
+// FindStringsBetween 从字符串中查找两个字符串之间的内容
+func FindStringsBetween(str, reg string) string {
+	re := regexp.MustCompile(reg)
+	matches := re.FindStringSubmatch(str)
+	if len(matches) > 1 {
+		return matches[1]
+	}
+	return ""
 }

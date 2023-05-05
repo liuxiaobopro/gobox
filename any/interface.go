@@ -1,4 +1,4 @@
-package main
+package any
 
 import (
 	"github.com/mitchellh/mapstructure"

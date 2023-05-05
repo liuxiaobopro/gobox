@@ -52,3 +52,21 @@ func TestHas(t *testing.T) {
 		})
 	}
 }
+
+func TestFindStringsBetween(t *testing.T) {
+	str := `
+    package file
+    import (
+        "bufio"
+        "io/ioutil"
+        "os"
+        "path/filepath"
+        "regexp"
+        "strings"
+    )
+    // ReplaceInDir 替换目录下所有文件中的字符串
+    `
+	reg := "import \\((?s)(.*?)\\)"
+	got := FindStringsBetween(str, reg)
+	t.Log("got: ", got)
+}
