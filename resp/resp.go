@@ -8,8 +8,6 @@ type T struct {
 	Data interface{} `json:"data"`
 }
 
-type Pt *T
-
 var (
 	SuccT        = &T{Code: SuccErrCode, Msg: ErrCodeMsg[SuccErrCode], Data: nil}
 	FailT        = &T{Code: FailErrCode, Msg: ErrCodeMsg[FailErrCode], Data: nil}
@@ -69,12 +67,7 @@ func (r T) GetData() interface{} {
 	return r.Data
 }
 
-func (r T) ToPt() *Pt {
-	Pt := Pt(&r)
-	return &Pt
-}
-
-func Succ(data interface{}) Pt {
+func Succ(data interface{}) *T {
 	return &T{
 		Code: SuccErrCode,
 		Msg:  ErrCodeMsg[SuccErrCode],
@@ -82,7 +75,7 @@ func Succ(data interface{}) Pt {
 	}
 }
 
-func Fail() Pt {
+func Fail() *T {
 	return &T{
 		Code: FailErrCode,
 		Msg:  ErrCodeMsg[FailErrCode],
@@ -90,7 +83,7 @@ func Fail() Pt {
 	}
 }
 
-func InternalErr() Pt {
+func InternalErr() *T {
 	return &T{
 		Code: InternalErrCode,
 		Msg:  ErrCodeMsg[InternalErrCode],
@@ -98,7 +91,7 @@ func InternalErr() Pt {
 	}
 }
 
-func ParamErr() Pt {
+func ParamErr() *T {
 	return &T{
 		Code: ParamErrCode,
 		Msg:  ErrCodeMsg[ParamErrCode],
@@ -106,7 +99,7 @@ func ParamErr() Pt {
 	}
 }
 
-func AuthErr() Pt {
+func AuthErr() *T {
 	return &T{
 		Code: AuthErrCode,
 		Msg:  ErrCodeMsg[AuthErrCode],
@@ -114,7 +107,7 @@ func AuthErr() Pt {
 	}
 }
 
-func PermErr() Pt {
+func PermErr() *T {
 	return &T{
 		Code: PermErrCode,
 		Msg:  ErrCodeMsg[PermErrCode],
@@ -122,7 +115,7 @@ func PermErr() Pt {
 	}
 }
 
-func ExistErr() Pt {
+func ExistErr() *T {
 	return &T{
 		Code: ExistErrCode,
 		Msg:  ErrCodeMsg[ExistErrCode],
@@ -130,7 +123,7 @@ func ExistErr() Pt {
 	}
 }
 
-func NotFoundErr() Pt {
+func NotFoundErr() *T {
 	return &T{
 		Code: NotFoundErrCode,
 		Msg:  ErrCodeMsg[NotFoundErrCode],
@@ -138,7 +131,7 @@ func NotFoundErr() Pt {
 	}
 }
 
-func LimitErr() Pt {
+func LimitErr() *T {
 	return &T{
 		Code: LimitErrCode,
 		Msg:  ErrCodeMsg[LimitErrCode],
@@ -146,7 +139,7 @@ func LimitErr() Pt {
 	}
 }
 
-func TimeoutErr() Pt {
+func TimeoutErr() *T {
 	return &T{
 		Code: TimeoutErrCode,
 		Msg:  ErrCodeMsg[TimeoutErrCode],
@@ -154,7 +147,7 @@ func TimeoutErr() Pt {
 	}
 }
 
-func OtherErr() Pt {
+func OtherErr() *T {
 	return &T{
 		Code: OtherErrCode,
 		Msg:  ErrCodeMsg[OtherErrCode],
