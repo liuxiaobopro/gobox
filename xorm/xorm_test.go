@@ -11,7 +11,7 @@ import (
 )
 
 func TestNewGenXormDao(t *testing.T) {
-	engine, err := xorm.NewEngine("mysql", "demo:Xt5EXax453NzNBz4@tcp(49.232.229.21:3306)/demo?charset=utf8mb4")
+	engine, err := xorm.NewEngine("mysql", "demo:xxxx@tcp(xxxxx:3306)/demo?charset=utf8mb4")
 	if err != nil {
 		panic(err)
 	}
