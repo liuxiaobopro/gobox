@@ -183,7 +183,7 @@ func (g *genXormDao) createProgramDaoFile(path, tName string, cols []string) err
 		Cols:         colsUpper,
 	}
 	// 解析模板
-	tpl, err := template.ParseFiles("xorm/tpl/dao_program.tpl")
+	tpl, err := template.ParseFiles("tpl/dao_program.tpl")
 	if err != nil {
 		return err
 	}
@@ -210,7 +210,7 @@ func (g *genXormDao) createDefaultDaoFile(path, tName string) error {
 	}
 
 	// 解析模板
-	tpl, err := template.ParseFiles("xorm/tpl/dao_default.tpl")
+	tpl, err := template.ParseFiles("tpl/dao_default.tpl")
 	if err != nil {
 		return err
 	}
