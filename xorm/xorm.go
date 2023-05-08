@@ -10,11 +10,13 @@ import (
 	"xorm.io/xorm"
 )
 
+type GenXormDaoOption func(*genXormDao)
+
 type genXormDao struct {
 	Mysql        *xorm.Engine // xorm Engine
 	Project      string       // 项目名
 	DaoMysqlPath string       // 生成的dao文件绝对路径
-	Prefix       string       // 前缀(用于dao文件的生成是否有前缀和package名, 建议传)
+	Prefix       string       // 前缀(用于dao文件的生成是否有前缀和package名, 建议传, 没有就不用传了)
 
 	tableInfo []tableInfo // 表信息
 }
@@ -38,7 +40,13 @@ var (
 	defaultDaoFileName = "%s_default.go" // 用户可修改dao文件名
 )
 
-func NewGenXormDao(mysql *xorm.Engine, daoMysqlPath, prefix, projectName string) *genXormDao {
+func WithPrefix(prefix string) GenXormDaoOption {
+	return func(g *genXormDao) {
+		g.Prefix = prefix
+	}
+}
+
+func NewGenXormDao(mysql *xorm.Engine, daoMysqlPath, projectName string, options ...func(*genXormDao)) *genXormDao {
 	if mysql == nil {
 		panic("mysql is nil")
 	}
@@ -48,12 +56,17 @@ func NewGenXormDao(mysql *xorm.Engine, daoMysqlPath, prefix, projectName string)
 	if projectName == "" {
 		panic("projectName is nil")
 	}
-	return &genXormDao{
+
+	g := &genXormDao{
 		Mysql:        mysql,
 		DaoMysqlPath: daoMysqlPath,
-		Prefix:       prefix,
 		Project:      projectName,
 	}
+
+	for _, option := range options {
+		option(g)
+	}
+	return g
 }
 
 func (g *genXormDao) InitData() error {
