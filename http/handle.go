@@ -13,9 +13,11 @@ type GinHandle struct{}
 
 // ShouldBind Get绑定到结构体
 // 例如：
-// type DemoGetReq struct {
-// 	Id int `json:"id" form:"id"` // 必须有form标签
-// }
+//
+//	type DemoGetReq struct {
+//		Id int `form:"id"` // 必须有form标签
+//	}
+//
 // var r req.DemoGetReq
 // /user?name=xxx => ShouldBind(c, &r)
 func (*GinHandle) ShouldBind(c *gin.Context, s interface{}) error {
@@ -24,13 +26,28 @@ func (*GinHandle) ShouldBind(c *gin.Context, s interface{}) error {
 
 // ShouldBindJSON Post绑定到结构体
 // 例如：
-// type DemoPostReq struct {
-// 	Id int `json:"id" form:"id"` // 必须有json标签,application/json
-// }
+//
+//	type DemoPostReq struct {
+//		Id int `json:"id"` // 必须有json标签,application/json
+//	}
+//
 // var r req.DemoPostReq
 // /user => ShouldBindJSON(c, &r)
 func (*GinHandle) ShouldBindJSON(c *gin.Context, s interface{}) error {
 	return c.ShouldBindJSON(s)
+}
+
+// ShouldBindUri 路由参数绑定到结构体
+// 例如：
+//
+//	type DemoUriReq struct {
+//		Id int `uri:"id"` // 必须有uri标签
+//	}
+//
+// var r req.DemoUriReq
+// /user/:id => ShouldBindUri(c, &r)
+func (*GinHandle) ShouldBindUri(c *gin.Context, s interface{}) error {
+	return c.ShouldBindUri(s)
 }
 
 // Param 获取路由参数
