@@ -13,10 +13,12 @@ import (
 type GenXormDaoOption func(*genXormDao)
 
 type genXormDao struct {
-	Mysql        *xorm.Engine // xorm Engine
-	Project      string       // 项目名
-	DaoMysqlPath string       // 生成的dao文件绝对路径
-	Prefix       string       // 前缀(用于dao文件的生成是否有前缀和package名, 建议传, 没有就不用传了)
+	ProgramTemplatePath string       // 程序生成的dao文件模板路径
+	DefaultTemplatePath string       // 用户可修改dao文件模板路径
+	Mysql               *xorm.Engine // xorm Engine
+	Project             string       // 项目名
+	DaoMysqlPath        string       // 生成的dao文件绝对路径
+	Prefix              string       // 前缀(用于dao文件的生成是否有前缀和package名, 建议传, 没有就不用传了)
 
 	tableInfo []tableInfo // 表信息
 }
@@ -40,32 +42,59 @@ var (
 	defaultDaoFileName = "%s_default.go" // 用户可修改dao文件名
 )
 
+func WithProgramTemplatePath(path string) GenXormDaoOption {
+	return func(g *genXormDao) {
+		g.ProgramTemplatePath = path
+	}
+}
+
+func WithDefaultTemplatePath(path string) GenXormDaoOption {
+	return func(g *genXormDao) {
+		g.DefaultTemplatePath = path
+	}
+}
+
+func WithMysql(mysql *xorm.Engine) GenXormDaoOption {
+	return func(g *genXormDao) {
+		g.Mysql = mysql
+	}
+}
+
+func WithProject(project string) GenXormDaoOption {
+	return func(g *genXormDao) {
+		g.Project = project
+	}
+}
+
+func WithDaoMysqlPath(path string) GenXormDaoOption {
+	return func(g *genXormDao) {
+		g.DaoMysqlPath = path
+	}
+}
+
 func WithPrefix(prefix string) GenXormDaoOption {
 	return func(g *genXormDao) {
 		g.Prefix = prefix
 	}
 }
 
-func NewGenXormDao(mysql *xorm.Engine, daoMysqlPath, projectName string, options ...func(*genXormDao)) *genXormDao {
-	if mysql == nil {
-		panic("mysql is nil")
-	}
-	if daoMysqlPath == "" {
-		daoMysqlPath = "./dao/mysql"
-	}
-	if projectName == "" {
-		panic("projectName is nil")
-	}
-
-	g := &genXormDao{
-		Mysql:        mysql,
-		DaoMysqlPath: daoMysqlPath,
-		Project:      projectName,
-	}
+func NewGenXormDao(options ...func(*genXormDao)) *genXormDao {
+	g := &genXormDao{}
 
 	for _, option := range options {
 		option(g)
 	}
+
+	if g.Mysql == nil {
+		panic("mysql is nil")
+	}
+	if g.DaoMysqlPath == "" {
+		panic("daoMysqlPath is nil")
+	}
+	if g.Project == "" {
+		panic("projectName is nil")
+	}
+
 	return g
 }
 

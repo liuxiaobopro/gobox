@@ -11,7 +11,7 @@ import (
 )
 
 func TestNewGenXormDao(t *testing.T) {
-	engine, err := xorm.NewEngine("mysql", "demo:xxxx@tcp(xxxxx:3306)/demo?charset=utf8mb4")
+	engine, err := xorm.NewEngine("mysql", "root:111111@tcp(192.168.3.74:3306)/demo?charset=utf8mb4")
 	if err != nil {
 		panic(err)
 	}
@@ -29,7 +29,14 @@ func TestNewGenXormDao(t *testing.T) {
 	engine.SetTZLocation(time.Local)                                         // 设置时区
 	engine.SetTableMapper(core.NewPrefixMapper(core.SnakeMapper{}, "qsgo_")) // 设置前缀
 
-	gxd := NewGenXormDao(engine, "./dao/mysql", "demo", WithPrefix("qsgo_"))
+	gxd := NewGenXormDao(
+		WithMysql(engine),
+		WithDaoMysqlPath("./dao/mysql"),
+		WithProject("demo"),
+		WithPrefix("qsgo_"),
+		WithProgramTemplatePath("./tpl/dao_default.tpl"),
+		WithDefaultTemplatePath("./tpl/dao_program.tpl"),
+	)
 	if err := gxd.Gen(); err != nil {
 		t.Error(err)
 	}
