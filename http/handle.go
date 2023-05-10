@@ -4,7 +4,7 @@ import (
 	"mime/multipart"
 	"net/http"
 
-	respx "github.com/liuxiaobopro/gobox/resp"
+	replyx "github.com/liuxiaobopro/gobox/reply"
 
 	"github.com/gin-gonic/gin"
 )
@@ -83,11 +83,11 @@ func (*GinHandle) ReturnJSON(c *gin.Context, code int, data interface{}) {
 // RetuenOk 返回成功json
 // 例如：RetuenOk(c, data) => ReturnJSON(c, http.StatusOK, respx.Succ(data))
 func (*GinHandle) RetuenOk(c *gin.Context, data interface{}) {
-	c.JSON(http.StatusOK, respx.Succ(data))
+	c.JSON(http.StatusOK, replyx.Succ(data))
 }
 
 // ReturnErr 返回错误json
 // 例如：ReturnErr(c, respx.ParamErrT.ToPt()) => ReturnJSON(c, http.StatusBadRequest, respx.ParamErrT.ToPt())
-func (*GinHandle) ReturnErr(c *gin.Context, r *respx.T) {
+func (*GinHandle) ReturnErr(c *gin.Context, r *replyx.T) {
 	c.JSON(http.StatusBadRequest, r)
 }

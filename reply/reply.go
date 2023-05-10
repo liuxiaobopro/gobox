@@ -1,4 +1,4 @@
-package resp
+package reply
 
 type RespCode int
 
