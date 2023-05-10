@@ -1,7 +1,6 @@
 package time
 
 import (
-	"fmt"
 	"time"
 )
 
@@ -12,13 +11,6 @@ const (
 
 	TimeZoneSH = "Asia/Shanghai"
 )
-
-type JsonTime time.Time
-
-func (t JsonTime) MarshalJSON() ([]byte, error) {
-	var stamp = fmt.Sprintf("\"%s\"", time.Time(t).Format(FormatDateTime))
-	return []byte(stamp), nil
-}
 
 // IntToString 将int转换为时间字符串
 // 例如: 1560000000 -> 2019-06-09 00:00:00
