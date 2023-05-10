@@ -20,6 +20,7 @@ var (
 	LimitErrT    = &T{Code: LimitErrCode, Msg: ErrCodeMsg[LimitErrCode], Data: nil}
 	TimeoutErrT  = &T{Code: TimeoutErrCode, Msg: ErrCodeMsg[TimeoutErrCode], Data: nil}
 	OtherErrT    = &T{Code: OtherErrCode, Msg: ErrCodeMsg[OtherErrCode], Data: nil}
+	MethodErrT   = &T{Code: MethodErrCode, Msg: ErrCodeMsg[MethodErrCode], Data: nil}
 )
 
 const (
@@ -35,6 +36,7 @@ const (
 	LimitErrCode    // 8
 	TimeoutErrCode  // 9
 	OtherErrCode    // 10
+	MethodErrCode   // 11
 )
 
 var ErrCodeMsg = map[RespCode]string{
@@ -49,6 +51,7 @@ var ErrCodeMsg = map[RespCode]string{
 	LimitErrCode:    "已限制操作",
 	TimeoutErrCode:  "超时错误",
 	OtherErrCode:    "未知错误",
+	MethodErrCode:   "方法错误",
 }
 
 func (r T) IsSucc() bool {
