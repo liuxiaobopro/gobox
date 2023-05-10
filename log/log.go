@@ -1,13 +1,27 @@
 package log
 
 import (
-	"github.com/zeromicro/go-zero/core/logx"
+	"context"
+	"fmt"
+	"runtime"
 )
 
-func Infof(format string, a ...any) {
-	logx.Infof(format, a...)
+func Infof(c context.Context, format string, a ...any) {
+	str := "[Gobox-Info]"
+	_, file, line, ok := runtime.Caller(1)
+	if ok {
+		str += fmt.Sprintf(" %s:%d ", file, line)
+	}
+	s := str + format
+	fmt.Printf(s, a...)
 }
 
-func Errorf(format string, a ...any) {
-	logx.Errorf(format, a...)
+func Errorf(c context.Context, format string, a ...any) {
+	str := "[Gobox-Error]"
+	_, file, line, ok := runtime.Caller(1)
+	if ok {
+		str += fmt.Sprintf(" %s:%d ", file, line)
+	}
+	s := str + format
+	fmt.Printf(s, a...)
 }

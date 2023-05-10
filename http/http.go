@@ -4,7 +4,6 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	logx "github.com/liuxiaobopro/gobox/log"
 	"github.com/liuxiaobopro/gobox/mapx"
 )
 
@@ -28,9 +27,6 @@ func (Client *Client) Get() ([]byte, error) {
 	}
 	req, err := http.NewRequest(http.MethodGet, Client.Url, nil)
 	if err != nil {
-		if Client.Debug {
-			logx.Errorf("http.NewRequest error: %v", err)
-		}
 		return nil, err
 	}
 	if Client.Header != nil {
@@ -43,9 +39,6 @@ func (Client *Client) Get() ([]byte, error) {
 	}
 	resp, err = http.DefaultClient.Do(req)
 	if err != nil {
-		if Client.Debug {
-			logx.Errorf("http.DefaultClient.Do error: %v", err)
-		}
 		return nil, err
 	}
 	defer resp.Body.Close()
@@ -60,9 +53,6 @@ func (Client *Client) Post() ([]byte, error) {
 	)
 	req, err := http.NewRequest(http.MethodPost, Client.Url, nil)
 	if err != nil {
-		if Client.Debug {
-			logx.Errorf("http.NewRequest error: %v", err)
-		}
 		return nil, err
 	}
 	if Client.Header != nil {
@@ -78,9 +68,6 @@ func (Client *Client) Post() ([]byte, error) {
 	}
 	resp, err = http.DefaultClient.Do(req)
 	if err != nil {
-		if Client.Debug {
-			logx.Errorf("http.DefaultClient.Do error: %v", err)
-		}
 		return nil, err
 	}
 	defer resp.Body.Close()
