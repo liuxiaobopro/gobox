@@ -9,7 +9,7 @@ import (
 	logx "github.com/liuxiaobopro/gobox/log"
 )
 
-func Print() gin.HandlerFunc {
+func Print(logger *logx.Gin) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		s := time.Now()
 		header, _ := json.Marshal(c.Request.Header)
@@ -25,12 +25,12 @@ func Print() gin.HandlerFunc {
 		Print Request Body: ` + fmt.Sprintf("%v", c.Request.MultipartForm) + `
 		-----------------request print end------------------------
 		`
-		logx.Infof(c, str)
+		logger.Infof(c, str)
 
 		c.Next()
 
 		e := time.Now()
 		latency := e.Sub(s)
-		logx.Infof(c, "Print latency: %s", latency)
+		logger.Infof(c, "Print latency: %s", latency)
 	}
 }
