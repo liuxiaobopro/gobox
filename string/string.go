@@ -1,6 +1,14 @@
 package string
 
-import "strings"
+import (
+	"math/rand"
+	"strconv"
+	"strings"
+	"sync"
+	"time"
+
+	"github.com/liuxiaobopro/gobox/crypto"
+)
 
 // Has 判断字符串是否存在某个字符
 func Has(s string, c byte) bool {
@@ -101,4 +109,28 @@ func ReplaceCharAfterSpecifiedCharLow(s, c string) (out string) {
 		out += FirstUp(v)
 	}
 	return
+}
+
+// Rand 生成随机字符串
+func Rand(l int) string {
+	str := "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	bytes := []byte(str)
+	result := []byte{}
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	for i := 0; i < l; i++ {
+		result = append(result, bytes[r.Intn(len(bytes))])
+	}
+	return string(result)
+}
+
+type SafeRand struct {
+	Str  string
+	lock sync.Mutex
+}
+
+// Rand 生成随机字符串
+func (sr *SafeRand) Rand() string {
+	sr.lock.Lock()
+	defer sr.lock.Unlock()
+	return crypto.Md5(strconv.Itoa(int(time.Now().UnixNano())) + sr.Str)
 }

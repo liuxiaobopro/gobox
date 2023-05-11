@@ -175,3 +175,12 @@ func TestReplaceCharAfterSpecifiedCharLow(t *testing.T) {
 		})
 	}
 }
+
+func TestSafeRand_Rand(t *testing.T) {
+	sd := &SafeRand{
+		Str: Rand(10),
+	}
+
+	t.Log(sd.Str + "\n")
+	t.Log(sd.Rand() + "\n")
+}
