@@ -15,8 +15,8 @@ func Infof(c *gin.Context, format string, a ...any) {
 		str += fmt.Sprintf(" %s:%d ", file, line)
 	}
 	if c != nil {
-		if v, has := c.Get(define.TRACE_ID); has {
-			str += fmt.Sprintf(" %s:%s ", define.TRACE_ID, v.(string))
+		if v, has := c.Get(define.TraceId); has {
+			str += fmt.Sprintf(" %s:%s ", define.TraceId, v.(string))
 		}
 	}
 	fmt.Printf(str+format, a...)
@@ -29,8 +29,8 @@ func Errorf(c *gin.Context, format string, a ...any) {
 		str += fmt.Sprintf(" %s:%d ", file, line)
 	}
 	if c != nil {
-		if v, has := c.Get(define.TRACE_ID); has {
-			str += fmt.Sprintf(" %s:%s ", define.TRACE_ID, v.(string))
+		if v, has := c.Get(define.TraceId); has {
+			str += fmt.Sprintf(" %s:%s ", define.TraceId, v.(string))
 		}
 	}
 	fmt.Printf(str+format, a...)

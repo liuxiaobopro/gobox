@@ -43,3 +43,15 @@ func StringToInt(t string) int {
 	}
 	return int(tt.Unix())
 }
+
+// NowTimeStr 获取当前时间字符串
+// 例如: 2019-06-09 00:00:00
+func NowTimeStr() string {
+	return time.Now().Format(FormatDateTime)
+}
+
+// NowTimeStamp
+// 例如: 1560000000
+func NowTimeStamp() int {
+	return int(time.Now().Unix())
+}

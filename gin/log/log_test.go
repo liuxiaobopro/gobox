@@ -14,7 +14,7 @@ func TestInfof(t *testing.T) {
 
 	// 注册 GET 请求的路由处理函数
 	r.GET("/", func(c *gin.Context) {
-		c.Set(define.TRACE_ID, "1234567890")
+		c.Set(define.TraceId, "1234567890")
 		Infof(c, "Hello %s \n", "Gin")
 		Infof(c, "%v \n", gin.H{
 			"message": "Hello, world!",
