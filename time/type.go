@@ -5,6 +5,11 @@ import (
 	"time"
 )
 
+var (
+	TimeZero = Time(time.Time{})
+	TimeNow  = Time(time.Now())
+)
+
 type JsonTime time.Time
 
 func (t JsonTime) MarshalJSON() ([]byte, error) {
