@@ -34,7 +34,7 @@ type tplInfo struct {
 	Package      string
 	PackageUpper string
 	Project      string
-	Cols         []string
+	Cols         [][]string
 }
 
 var (
@@ -195,11 +195,11 @@ func (g *genXormDao) createProgramDaoFile(path, tName string, cols []string) err
 	var (
 		file      *os.File
 		err       error
-		colsUpper []string
+		colsUpper [][]string
 	)
 
 	for _, v := range cols {
-		colsUpper = append(colsUpper, stringx.ReplaceCharAfterSpecifiedCharUp(v, "_"))
+		colsUpper = append(colsUpper, []string{stringx.ReplaceCharAfterSpecifiedCharUp(v, "_"), v})
 	}
 
 	if file, err = os.Create(path); err != nil {
