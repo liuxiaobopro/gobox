@@ -184,3 +184,64 @@ func TestSafeRand_Rand(t *testing.T) {
 	t.Log(sd.Str + "\n")
 	t.Log(sd.Rand() + "\n")
 }
+
+func TestToLowerCamelCase(t *testing.T) {
+	type args struct {
+		s string
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{
+			name: "test1",
+			args: args{
+				"abc_def_ghi",
+			},
+			want: "abcDefGhi",
+		},
+		{
+			name: "test2",
+			args: args{
+				"a",
+			},
+			want: "a",
+		},
+		{
+			name: "test3",
+			args: args{
+				"ab",
+			},
+			want: "ab",
+		},
+		{
+			name: "test4",
+			args: args{
+				"ab*1",
+			},
+			want: "ab1",
+		},
+        {
+			name: "test5",
+			args: args{
+				"111",
+			},
+			want: "111",
+		},
+        {
+			name: "test6",
+			args: args{
+				"AbcDefGhi",
+			},
+			want: "abcDefGhi",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := ToLowerCamelCase(tt.args.s); got != tt.want {
+				t.Errorf("ToLowerCamelCase() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
