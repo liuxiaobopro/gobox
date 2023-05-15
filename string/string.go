@@ -6,7 +6,6 @@ import (
 	"strings"
 	"sync"
 	"time"
-	"unicode"
 
 	"github.com/liuxiaobopro/gobox/crypto"
 )
@@ -137,29 +136,4 @@ func (sr *SafeRand) Rand() string {
 	sr.lock.Lock()
 	defer sr.lock.Unlock()
 	return crypto.Md5(strconv.Itoa(int(time.Now().UnixNano())) + sr.Str)
-}
-
-// ToLowerCamelCase 将字符串转换为小驼峰
-func ToLowerCamelCase(s string) string {
-	// 将字符串转换为小写
-	s = strings.ToLower(s)
-
-	// 将字符串分割成单词
-	words := strings.FieldsFunc(s, func(r rune) bool {
-		return !unicode.IsLetter(r) && !unicode.IsNumber(r)
-	})
-
-	// 将第一个单词的首字母小写，并将其与其余单词连接起来
-	var b strings.Builder
-	for _, word := range words {
-		// if i == 0 {
-		// 	word = strings.ToLower(word)
-		// } else {
-		// 	word = cases.LowerCamel().String(word)
-		// }
-		b.WriteString(word)
-	}
-
-	// 返回连接后的字符串
-	return b.String()
 }
