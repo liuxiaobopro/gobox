@@ -52,11 +52,16 @@ func AesEcrypt(origData []byte, key []byte) ([]byte, error) {
 	crypted := make([]byte, len(origData))
 	//执行加密
 	blocMode.CryptBlocks(crypted, origData)
-	return crypted, nil
+	// return crypted, nil
+	return []byte(base64.StdEncoding.EncodeToString(crypted)), nil
 }
 
 // 实现解密
 func AesDeCrypt(cypted []byte, key []byte) ([]byte, error) {
+	ciphertextBytes, err := base64.StdEncoding.DecodeString(string(cypted))
+	if err != nil {
+		return nil, err
+	}
 	//创建加密算法实例
 	block, err := aes.NewCipher(key)
 	if err != nil {
@@ -66,9 +71,9 @@ func AesDeCrypt(cypted []byte, key []byte) ([]byte, error) {
 	blockSize := block.BlockSize()
 	//创建加密客户端实例
 	blockMode := cipher.NewCBCDecrypter(block, key[:blockSize])
-	origData := make([]byte, len(cypted))
+	origData := make([]byte, len(ciphertextBytes))
 	//这个函数也可以用来解密
-	blockMode.CryptBlocks(origData, cypted)
+	blockMode.CryptBlocks(origData, ciphertextBytes)
 	//去除填充字符串
 	origData, err = PKCS7UnPadding(origData)
 	if err != nil {
