@@ -95,10 +95,12 @@ func FindStringsBetween(str, reg string) string {
 // @param fileHeader 文件头
 // @param filepath 文件保存路径
 // @return 文件路径，文件名，错误
-func Upload(file multipart.File, fileHeader *multipart.FileHeader, filepath string) (string, string, error) {
+func Upload(file multipart.File, fileHeader *multipart.FileHeader, filepath string, filename string) (string, string, error) {
 	// 生成文件名
 	fileExt := path.Ext(fileHeader.Filename)
-	filename := fmt.Sprintf("%d%s", time.Now().UnixNano(), fileExt)
+	if filename == "" {
+		filename = fmt.Sprintf("%d%s", time.Now().UnixNano(), fileExt)
+	}
 
 	// 生成文件夹
 	uploadPath := filepath

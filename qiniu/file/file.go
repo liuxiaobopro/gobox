@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"mime/multipart"
 	"os"
+	"sync"
 
 	filex "github.com/liuxiaobopro/gobox/file"
 	qiniux "github.com/liuxiaobopro/gobox/qiniu"
@@ -18,7 +19,10 @@ type File struct {
 	Bucket string // 空间名
 	ImgUrl string // cdn域名
 
+	lock sync.Mutex
+
 	service struct {
+		FileName   string // 上传到服务器的文件名
 		FilePath   string // 上传到服务器的文件路径
 		IsDelLocal bool   // 上传之后是否删除本地文件
 		Zone       *storage.Zone
@@ -80,8 +84,19 @@ func NewQiniu(opts ...option) *File {
 	return q
 }
 
+func (f *File) SetFilePath(filePath string) {
+	f.service.FilePath = filePath
+}
+
+func (f *File) SetFileName(fileName string) {
+	f.service.FileName = fileName
+}
+
 func (f *File) UploadFile(file multipart.File, fileHeader *multipart.FileHeader) (string, error) {
-	filePath, fileName, err := filex.Upload(file, fileHeader, f.service.FilePath)
+	f.lock.Lock()
+	defer f.lock.Unlock()
+
+	filePath, fileName, err := filex.Upload(file, fileHeader, f.service.FilePath, f.service.FileName)
 	if err != nil {
 		return "", err
 	}

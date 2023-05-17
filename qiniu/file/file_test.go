@@ -3,8 +3,10 @@ package file
 import (
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/qiniu/go-sdk/v7/storage"
 )
 
 func TestNewQiniu(t *testing.T) {
@@ -21,11 +23,16 @@ func TestNewQiniu(t *testing.T) {
 		}
 
 		qiniu := NewQiniu(
-			WithKey("7cQPM5OR753SZYtNXXWgjt_0bVsiI8_mIj2ng90g", "rMlzsj2Wq9WZDUjB60J9Lffvjy8I7Q7ngxv3GZf8"),
-			WithBucket("liuxiaobo-img"),
-			WithImgUrl("img.liuxiaobo.net.cn"),
+			WithKey("xxx", "xxx"),
+			WithBucket("xxx-img"),
+			WithImgUrl("http://xx.xx"),
 			WithFilePath("./img/"),
+			WithZone(&storage.ZoneHuabei),
+			WithIsDelLocal(true),
 		)
+
+		qiniu.SetFilePath("./img1/")
+		qiniu.SetFileName(fmt.Sprintf("%s%d", "test", time.Now().UnixNano()))
 
 		// func (f *File) UploadFile(file multipart.File, fileHeader *multipart.FileHeader) (string, error)
 		imgUrl, err := qiniu.UploadFile(file, fileHeader)
@@ -48,5 +55,5 @@ func TestNewQiniu(t *testing.T) {
 		})
 	})
 
-	r.Run(":8080")
+	// r.Run(":8080")
 }

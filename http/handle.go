@@ -74,6 +74,12 @@ func (*GinHandle) FormFile(c *gin.Context, key string) (*multipart.FileHeader, e
 	return c.FormFile(key)
 }
 
+// RequestFormFile 获取上传文件
+// 例如：RequestFormFile(c, "file")
+func (*GinHandle) RequestFormFile(c *gin.Context, key string) (multipart.File, *multipart.FileHeader, error) {
+	return c.Request.FormFile(key)
+}
+
 // ReturnJSON 返回json
 // 例如：ReturnJSON(c, http.StatusOK, respx.Succ(data))
 func (*GinHandle) ReturnJSON(c *gin.Context, code int, data interface{}) {
