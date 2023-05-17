@@ -68,7 +68,7 @@ func WithZone(zone *storage.Zone) option {
 	}
 }
 
-func NewQiniu(opts ...option) *File {
+func NewFile(opts ...option) *File {
 	q := &File{}
 	for _, opt := range opts {
 		opt(q)

@@ -22,7 +22,7 @@ func TestNewQiniu(t *testing.T) {
 			return
 		}
 
-		qiniu := NewQiniu(
+		qiniu := NewFile(
 			WithKey("xxx", "xxx"),
 			WithBucket("xxx-img"),
 			WithImgUrl("http://xx.xx"),
