@@ -2,11 +2,16 @@ package file
 
 import (
 	"bufio"
+	"fmt"
+	"io"
 	"io/ioutil"
+	"mime/multipart"
 	"os"
+	"path"
 	"path/filepath"
 	"regexp"
 	"strings"
+	"time"
 )
 
 // ReplaceInDir 替换目录下所有文件中的字符串
@@ -83,4 +88,38 @@ func FindStringsBetween(str, reg string) string {
 		return matches[1]
 	}
 	return ""
+}
+
+// Upload 上传文件
+// @param file 文件
+// @param fileHeader 文件头
+// @param filepath 文件保存路径
+// @return 文件路径，文件名，错误
+func Upload(file multipart.File, fileHeader *multipart.FileHeader, filepath string) (string, string, error) {
+	// 生成文件名
+	fileExt := path.Ext(fileHeader.Filename)
+	filename := fmt.Sprintf("%d%s", time.Now().UnixNano(), fileExt)
+
+	// 生成文件夹
+	uploadPath := filepath
+	// 创建文件夹
+	pwd, _ := os.Getwd()
+	folder := pwd + uploadPath
+	if err := os.MkdirAll(folder, 0744); err != nil {
+		return "", "", err
+	}
+	// 生成文件路径
+	fPath := fmt.Sprintf("%s/%s", folder, filename)
+	fW, err := os.Create(fPath)
+	if err != nil {
+		return "", "", err
+	}
+	defer fW.Close()
+	// 复制文件，保存到本地
+	_, err = io.Copy(fW, file)
+	if err != nil {
+		return "", "", err
+	}
+
+	return fPath, filename, nil
 }
