@@ -1,12 +1,12 @@
 package log
 
 import (
+	"bytes"
 	"fmt"
 	"runtime"
+	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/liuxiaobopro/gobox/define"
-	"github.com/liuxiaobopro/gobox/time"
 )
 
 type Mode string
@@ -23,8 +23,8 @@ const (
 	InfoLevel  Level = "info"
 	WarnLevel  Level = "warn"
 	ErrorLevel Level = "error"
-	FatalLevel Level = "fatal"
 	PanicLevel Level = "panic"
+	FatalLevel Level = "fatal"
 )
 
 type Gin struct {
@@ -63,30 +63,48 @@ func NewGin(op ...GinOption) *Gin {
 	return c
 }
 
-func (conf *Gin) Infof(c *gin.Context, format string, a ...any) {
-	str := fmt.Sprintf("[Gobox] | %s | %s ", InfoLevel, time.NowTimeStr())
-	_, file, line, ok := runtime.Caller(1)
-	if ok {
-		str += fmt.Sprintf("| %s:%d ", file, line)
-	}
-	if c != nil {
-		if v, has := c.Get(define.TraceId); has {
-			str += fmt.Sprintf("| %s:%s ", define.TraceId, v.(string))
-		}
-	}
-	fmt.Printf(fmt.Sprintf("%s | %s %s", str, format, "\n"), a...)
+func (conf *Gin) Debugf(c *gin.Context, format string, a ...interface{}) {
+	conf.logf(DebugLevel, c, format, a...)
 }
 
-func (conf *Gin) Errorf(c *gin.Context, format string, a ...any) {
-	str := fmt.Sprintf("[Gobox] | %s | %s ", ErrorLevel, time.NowTimeStr())
-	_, file, line, ok := runtime.Caller(1)
+func (conf *Gin) Infof(c *gin.Context, format string, a ...interface{}) {
+	conf.logf(InfoLevel, c, format, a...)
+}
+
+func (conf *Gin) Warnf(c *gin.Context, format string, a ...interface{}) {
+	conf.logf(WarnLevel, c, format, a...)
+}
+
+func (conf *Gin) Errorf(c *gin.Context, format string, a ...interface{}) {
+	conf.logf(ErrorLevel, c, format, a...)
+}
+
+func (conf *Gin) Panicf(c *gin.Context, format string, a ...interface{}) {
+	conf.logf(PanicLevel, c, format, a...)
+}
+
+func (conf *Gin) Fatalf(c *gin.Context, format string, a ...interface{}) {
+	conf.logf(FatalLevel, c, format, a...)
+}
+
+func (conf *Gin) logf(level Level, c *gin.Context, format string, a ...interface{}) {
+	var buf bytes.Buffer
+
+	fmt.Fprintf(&buf, "[Gobox] | %s | %s ", level, time.Now().Format("2006-01-02 15:04:05"))
+
+	_, file, line, ok := runtime.Caller(2)
 	if ok {
-		str += fmt.Sprintf("| %s:%d ", file, line)
+		fmt.Fprintf(&buf, "| %s:%d ", file, line)
 	}
+
 	if c != nil {
-		if v, has := c.Get(define.TraceId); has {
-			str += fmt.Sprintf("| %s:%s ", define.TraceId, v.(string))
+		if v, has := c.Get("TraceId"); has {
+			fmt.Fprintf(&buf, "| %s:%s ", "TraceId", v.(string))
 		}
 	}
-	fmt.Printf(fmt.Sprintf("%s | %s %s", str, format, "\n"), a...)
+
+	fmt.Fprintf(&buf, format, a...)
+	fmt.Fprint(&buf, "\n")
+
+	fmt.Print(buf.String())
 }
