@@ -1,8 +1,6 @@
 package sms
 
 import (
-	"fmt"
-
 	openapi "github.com/alibabacloud-go/darabonba-openapi/v2/client"
 	dysmsapi20170525 "github.com/alibabacloud-go/dysmsapi-20170525/v3/client"
 	util "github.com/alibabacloud-go/tea-utils/v2/service"
@@ -19,9 +17,9 @@ type Sms struct {
 		ConnectTimeout int    // 连接超时时间
 	}
 	service struct {
-		client *dysmsapi20170525.Client
-		phone  string // 手机号
-		code   string // 验证码
+		client     *dysmsapi20170525.Client
+		phone      string // 手机号
+		sendResult *SendResult
 	}
 }
 
@@ -58,12 +56,22 @@ func WithConnectTimeout(connectTimeout int) option {
 	}
 }
 
+func WithPhone(phone string) option {
+	return func(s *Sms) {
+		s.service.phone = phone
+	}
+}
+
 func NewSms(options ...option) *Sms {
 	s := &Sms{}
 	for _, option := range options {
 		option(s)
 	}
 	return s
+}
+
+type SendResult struct {
+	*dysmsapi20170525.SendSmsResponse
 }
 
 func (s *Sms) CreateClient() error {
@@ -85,29 +93,28 @@ func (s *Sms) CreateClient() error {
 }
 
 // Send 发送短信
-func (s *Sms) Send() (*dysmsapi20170525.SendSmsResponse, error) {
+func (s *Sms) Send() error {
 	sendSmsRequest := &dysmsapi20170525.SendSmsRequest{
 		PhoneNumbers:  tea.String(s.service.phone),
 		SignName:      tea.String(s.Sms.SignName),
 		TemplateCode:  tea.String(s.Sms.TemplateCode),
-		TemplateParam: tea.String(fmt.Sprintf(s.Sms.TemplateParam, s.service.code)),
+		TemplateParam: tea.String(s.Sms.TemplateParam),
 	}
 	runtime := &util.RuntimeOptions{
 		ConnectTimeout: tea.Int(s.Sms.ConnectTimeout),
 	}
 	_result, _err := s.service.client.SendSmsWithOptions(sendSmsRequest, runtime)
 	if _err != nil {
-		return nil, _err
+		return _err
 	}
-	return _result, nil
+	s.service.sendResult = &SendResult{_result}
+	return nil
 }
 
-// SetPhone 设置手机号
-func (s *Sms) SetPhone(phone string) {
-	s.service.phone = phone
+func (s *Sms) SendResult() *SendResult {
+	return s.service.sendResult
 }
 
-// SetCode 设置验证码
-func (s *Sms) SetCode(code string) {
-	s.service.code = code
+func (s *Sms) Ok() bool {
+	return *s.service.sendResult.Body.Code == "OK"
 }
