@@ -97,3 +97,9 @@ func (*GinHandle) RetuenOk(c *gin.Context, data interface{}) {
 func (*GinHandle) ReturnErr(c *gin.Context, r *replyx.T) {
 	c.JSON(http.StatusBadRequest, r)
 }
+
+// RetuenHTML 返回html
+// 例如：RetuenHTML(c, "index.html", data)
+func (*GinHandle) RetuenHTML(c *gin.Context, name string, data interface{}) {
+	c.HTML(http.StatusOK, name, data)
+}
