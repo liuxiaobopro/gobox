@@ -1,3 +1,6 @@
 package define
 
-const TraceId = "TraceId"
+const (
+	Author  = "liuxiaobo"
+	TraceId = "TraceId"
+)

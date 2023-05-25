@@ -13,16 +13,15 @@ type demo struct {
 
 func (d *demo) Do() {
 	d.ReturnJson(200, &reply.T{
-		Code: 66,
-		Msg:  "hello world",
+		Code: 0,
+		Msg:  d.GetAuthor(),
 	})
 }
 
 func main() {
 	r := gin.Default()
 
-	var d = &demo{}
-	r.GET("/ping", ctx.Use(d))
+	r.GET("/ping", ctx.Use(new(demo)))
 
 	if err := r.Run(":8080"); err != nil {
 		panic(err)
