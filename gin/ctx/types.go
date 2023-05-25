@@ -19,7 +19,7 @@ type Flow struct {
 }
 
 func (f *Flow) Do() {
-	panic("implement me")
+	panic("implement func Do()")
 }
 
 func (f *Flow) ReturnJson(code int, data *replyx.T) {
@@ -27,5 +27,5 @@ func (f *Flow) ReturnJson(code int, data *replyx.T) {
 }
 
 func (f *Flow) Error(err error) {
-	fmt.Printf("[Flow Error]: %v \n", err)
+	fmt.Printf("[Flow Error] %v \n", err)
 }
