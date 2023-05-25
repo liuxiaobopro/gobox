@@ -62,14 +62,19 @@ func (s *Oss) CreateClient() error {
 }
 
 // PutObject 上传文件
-func (s *Oss) PutObject(objectKey string, localFile io.Reader) error {
+func (s *Oss) PutObject(objectKey string, localFile io.Reader) (string, error) {
 	bucket, err := s.service.client.Bucket(s.Oss.Bucket)
 	if err != nil {
-		return err
+		return "", err
 	}
 	err = bucket.PutObject(objectKey, localFile)
 	if err != nil {
-		return err
+		return "", err
 	}
-	return nil
+
+	url, err := bucket.SignURL(objectKey, oss.HTTPGet, 3600)
+	if err != nil {
+		return "", err
+	}
+	return url, nil
 }

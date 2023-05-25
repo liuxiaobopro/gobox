@@ -9,15 +9,15 @@ import (
 )
 
 func main() {
-	defer func() {
-		if err := recover(); err != nil {
-			fmt.Println(err)
-		}
-	}()
-
 	r := gin.Default()
 
 	r.POST("/upload", func(c *gin.Context) {
+		defer func() {
+			if err := recover(); err != nil {
+				fmt.Println(err)
+			}
+		}()
+
 		f, err := c.FormFile("file")
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
@@ -51,11 +51,11 @@ func main() {
 
 		path := "aliupload/" + f.Filename
 
-		if err := oss.PutObject(path, src); err != nil {
+		if url, err := oss.PutObject(path, src); err != nil {
 			panic(err)
+		} else {
+			c.String(200, url)
 		}
-
-		c.String(200, f.Filename)
 	})
 
 	r.Run(":8080")
