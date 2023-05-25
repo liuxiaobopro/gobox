@@ -149,3 +149,9 @@ func (sr *SafeRand) Rand() string {
 	defer sr.lock.Unlock()
 	return crypto.Md5(strconv.Itoa(int(time.Now().UnixNano())) + sr.Str)
 }
+
+// IsNumber 判断是否是数字或者小数
+func IsNumber(s string) bool {
+	_, err := strconv.ParseFloat(s, 64)
+	return err == nil
+}

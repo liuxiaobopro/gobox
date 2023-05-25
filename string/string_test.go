@@ -184,3 +184,43 @@ func TestSafeRand_Rand(t *testing.T) {
 	t.Log(sd.Str + "\n")
 	t.Log(sd.Rand() + "\n")
 }
+
+func TestIsNumber(t *testing.T) {
+	type args struct {
+		s string
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{
+			name: "test1",
+			args: args{
+				s: "123",
+			},
+			want: true,
+		},
+		{
+			name: "test2",
+			args: args{
+				s: "123.3",
+			},
+			want: true,
+		},
+		{
+			name: "test2",
+			args: args{
+				s: "123.3d",
+			},
+			want: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := IsNumber(tt.args.s); got != tt.want {
+				t.Errorf("IsNumber() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
