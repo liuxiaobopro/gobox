@@ -33,6 +33,7 @@ type tableInfo struct {
 type tplInfo struct {
 	Package      string
 	PackageUpper string
+	PackageLower string
 	Project      string
 	Cols         [][]string
 }
@@ -208,6 +209,7 @@ func (g *genXormDao) createProgramDaoFile(path, tName string, cols []string) err
 	data := tplInfo{
 		Package:      tName,
 		PackageUpper: stringx.ReplaceCharAfterSpecifiedCharUp(stringx.FirstUp(tName), "_"),
+		PackageLower: stringx.ReplaceCharAfterSpecifiedCharUp(tName, "_"),
 		Project:      g.Project,
 		Cols:         colsUpper,
 	}
