@@ -207,7 +207,7 @@ func (g *genXormDao) createProgramDaoFile(path, tName string, cols []string) err
 	}
 	data := tplInfo{
 		Package:      tName,
-		PackageUpper: stringx.FirstUp(tName),
+		PackageUpper: stringx.ReplaceCharAfterSpecifiedCharUp(stringx.FirstUp(tName), "_"),
 		Project:      g.Project,
 		Cols:         colsUpper,
 	}
