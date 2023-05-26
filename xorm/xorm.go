@@ -1,7 +1,6 @@
 package xorm
 
 import (
-	"encoding/json"
 	"fmt"
 	"html/template"
 	"os"
@@ -214,8 +213,8 @@ func (g *genXormDao) createProgramDaoFile(path, tName string, cols []string) err
 		Project:      g.Project,
 		Cols:         colsUpper,
 	}
-	jsonStr, _ := json.Marshal(data)
-	fmt.Println("模板变量信息: ", string(jsonStr))
+	// jsonStr, _ := json.Marshal(data)
+	// fmt.Println("模板变量信息: ", string(jsonStr))
 	// 解析模板
 	tpl, err := template.ParseFiles("tpl/dao_program.tpl")
 	if err != nil {
