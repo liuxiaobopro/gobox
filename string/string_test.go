@@ -1,7 +1,9 @@
 package string
 
 import (
+	"fmt"
 	"testing"
+	"time"
 )
 
 func TestHas(t *testing.T) {
@@ -223,4 +225,22 @@ func TestIsNumber(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestRand(t *testing.T) {
+	for i := 0; i < 10; i++ {
+		code := Rand(10)
+		fmt.Println("code: ", code)
+	}
+}
+
+func TestRandFor(t *testing.T) {
+	for i := 0; i < 10; i++ {
+		code := RandFor(10, time.Now().UnixNano()+int64(i))
+		fmt.Println("code: ", code)
+	}
+}
+
+func TestRandStrArr(t *testing.T) {
+	fmt.Println("RandStrArr: ", RandStrArr(20, 10))
 }

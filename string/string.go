@@ -137,6 +137,29 @@ func Rand(l int) string {
 	return string(result)
 }
 
+// RandV1 生成随机字符串
+func RandFor(l int, seed int64) string {
+	str := "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	bytes := []byte(str)
+	result := []byte{}
+	r := rand.New(rand.NewSource(seed))
+	for i := 0; i < l; i++ {
+		result = append(result, bytes[r.Intn(len(bytes))])
+	}
+	return string(result)
+}
+
+// RandStrArr 生成随机字符串数组
+// @param l 长度
+// @param n 数量
+func RandStrArr(l int, n int) []string {
+	var out []string
+	for i := 0; i < n; i++ {
+		out = append(out, RandFor(l, time.Now().UnixNano()+int64(i)))
+	}
+	return out
+}
+
 // RandInt 生成随机数字字符串
 func RandInt(l int) string {
 	str := "0123456789"
