@@ -88,6 +88,17 @@ func FirstUp(s string) string {
 	return strings.ToUpper(s[0:1]) + s[1:]
 }
 
+// FirstLow 首字母小写
+func FirstLow(s string) string {
+	if len(s) == 0 {
+		return ""
+	}
+	if len(s) == 1 {
+		return strings.ToLower(s)
+	}
+	return strings.ToLower(s[0:1]) + s[1:]
+}
+
 // ReplaceCharAfterSpecifiedCharUp 替换指定字符后面的字符为大驼峰
 // 例如：ReplaceCharAfterSpecifiedCharUp("abc/def/ghi", '/') => "AbcDefGhi"
 func ReplaceCharAfterSpecifiedCharUp(s, c string) (out string) {

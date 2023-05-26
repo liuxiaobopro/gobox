@@ -209,7 +209,7 @@ func (g *genXormDao) createProgramDaoFile(path, tName string, cols []string) err
 	data := tplInfo{
 		Package:      tName,
 		PackageUpper: stringx.ReplaceCharAfterSpecifiedCharUp(stringx.FirstUp(tName), "_"),
-		PackageLower: stringx.ReplaceCharAfterSpecifiedCharUp(tName, "_"),
+		PackageLower: stringx.ReplaceCharAfterSpecifiedCharUp(stringx.FirstLow(tName), "_"),
 		Project:      g.Project,
 		Cols:         colsUpper,
 	}
