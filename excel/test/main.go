@@ -1,12 +1,12 @@
-package excel
+package main
 
 import (
-	"testing"
-
 	"github.com/gin-gonic/gin"
+
+	excelx "github.com/liuxiaobopro/gobox/excel"
 )
 
-func TestRead_Read(t *testing.T) {
+func main() {
 	r := gin.Default()
 	r.POST("/upload", upload)
 	r.Run(":8081")
@@ -27,10 +27,10 @@ func upload(c *gin.Context) {
 		panic(err)
 	}
 
-	excelRead := NewRead(
-		WithFile(file.Filename),
-		WithLu(Cell{Col: "A", Row: 2}),
-		WithRd(Cell{Col: "F", Row: 2}),
+	excelRead := excelx.NewRead(
+		excelx.WithFile(file.Filename),
+		excelx.WithLu(excelx.Cell{Col: "A", Row: 2}),
+		excelx.WithRd(excelx.Cell{Col: "F"}),
 	)
 
 	var (
@@ -41,6 +41,8 @@ func upload(c *gin.Context) {
 	if res, err = excelRead.Read(); err != nil {
 		panic(err)
 	}
+
+	excelRead.Print()
 
 	c.JSON(200, gin.H{
 		"msg": res,

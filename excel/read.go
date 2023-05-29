@@ -7,28 +7,6 @@ import (
 	"github.com/xuri/excelize/v2"
 )
 
-type Row int // 行
-func (r Row) ToInt() int {
-	return int(r)
-}
-
-type Col string // 列
-func (c Col) ToString() string {
-	return string(c)
-}
-
-type Cell struct {
-	Row Row
-	Col Col
-} // 单元格
-
-type Read struct {
-	file  string // 文件
-	Lu    Cell   // 左上单元格坐标
-	Rd    Cell   // 右下单元格坐标
-	Sheet string // 工作表名称
-}
-
 type ReadOption func(*Read)
 
 func WithFile(file string) ReadOption {
@@ -79,7 +57,7 @@ func (r *Read) Read() ([][]string, error) {
 	)
 
 	if r.Rd.Row == 0 {
-		row, err := r.GetMaxRowNum()
+		row, err := r.getMaxRowNum()
 		if err != nil {
 			return nil, err
 		}
@@ -110,8 +88,8 @@ func (r *Read) Read() ([][]string, error) {
 	return out, nil
 }
 
-// GetMaxRowNum 获取最大行数
-func (r *Read) GetMaxRowNum() (int, error) {
+// getMaxRowNum 获取最大行数
+func (r *Read) getMaxRowNum() (int, error) {
 	var (
 		out int
 	)
@@ -123,7 +101,7 @@ func (r *Read) GetMaxRowNum() (int, error) {
 	}
 
 	// 获取工作表中指定单元格的值
-	for i := r.Lu.Row.ToInt(); i <= r.Rd.Row.ToInt(); i++ {
+	for i := 1; ; i++ {
 		cell := fmt.Sprintf("A%d", i)
 		// 获取单元格内容
 		value, err := f.GetCellValue(r.Sheet, cell)
@@ -136,5 +114,12 @@ func (r *Read) GetMaxRowNum() (int, error) {
 		out++
 	}
 
+	fmt.Println("out:", out)
+
 	return out, nil
+}
+
+// Print 打印
+func (r *Read) Print() {
+	fmt.Printf("Args: %+v\n", *r)
 }
