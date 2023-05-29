@@ -61,6 +61,10 @@ func NewRead(opts ...ReadOption) *Read {
 		opt(r)
 	}
 
+	if r.Lu.Row == 0 || r.Lu.Col == "" || r.Rd.Col == "" {
+		panic("左上单元格坐标不能为空")
+	}
+
 	if r.Sheet == "" {
 		r.Sheet = "Sheet1"
 	}
@@ -73,6 +77,14 @@ func (r *Read) Read() ([][]string, error) {
 	var (
 		out [][]string
 	)
+
+	if r.Rd.Row == 0 {
+		row, err := r.GetMaxRowNum()
+		if err != nil {
+			return nil, err
+		}
+		r.Rd.Row = Row(row)
+	}
 
 	// 读取文件
 	f, err := excelize.OpenFile(r.file)
@@ -93,6 +105,35 @@ func (r *Read) Read() ([][]string, error) {
 			row = append(row, value)
 		}
 		out = append(out, row)
+	}
+
+	return out, nil
+}
+
+// GetMaxRowNum 获取最大行数
+func (r *Read) GetMaxRowNum() (int, error) {
+	var (
+		out int
+	)
+
+	// 读取文件
+	f, err := excelize.OpenFile(r.file)
+	if err != nil {
+		panic(err)
+	}
+
+	// 获取工作表中指定单元格的值
+	for i := r.Lu.Row.ToInt(); i <= r.Rd.Row.ToInt(); i++ {
+		cell := fmt.Sprintf("A%d", i)
+		// 获取单元格内容
+		value, err := f.GetCellValue(r.Sheet, cell)
+		if err != nil {
+			return 0, err
+		}
+		if value == "" {
+			break
+		}
+		out++
 	}
 
 	return out, nil
