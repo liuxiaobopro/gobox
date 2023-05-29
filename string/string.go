@@ -1,7 +1,10 @@
 package string
 
 import (
+	"fmt"
 	"math/rand"
+	"mime/multipart"
+	"path"
 	"strconv"
 	"strings"
 	"sync"
@@ -198,4 +201,12 @@ func ToAccii(s string) int {
 // StrToAccii 将accii码转换为大写字母
 func AcciiToStr(s int) string {
 	return string(rune(s))
+}
+
+// UniqueFileName 生成唯一文件名
+func UniqueFileName(f *multipart.FileHeader) string {
+	fileSuffix := path.Ext(f.Filename)
+	fileName := strings.TrimSuffix(f.Filename, fileSuffix)
+	fileName = fmt.Sprintf("%s_%s%s", fileName, crypto.Md5(strconv.Itoa(int(time.Now().UnixNano()))), fileSuffix)
+	return fileName
 }
