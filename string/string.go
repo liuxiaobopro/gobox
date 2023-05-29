@@ -189,3 +189,13 @@ func IsNumber(s string) bool {
 	_, err := strconv.ParseFloat(s, 64)
 	return err == nil
 }
+
+// ToAccii 将大写字母转换为accii码
+func ToAccii(s string) int {
+	return int([]rune(s)[0])
+}
+
+// StrToAccii 将accii码转换为大写字母
+func AcciiToStr(s int) string {
+	return string(rune(s))
+}
