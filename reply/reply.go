@@ -40,7 +40,7 @@ const (
 )
 
 var ErrCodeMsg = map[RespCode]string{
-	SuccErrCode:     "ok",
+	SuccErrCode:     "操作成功",
 	FailErrCode:     "操作失败",
 	InternalErrCode: "内部错误",
 	ParamErrCode:    "参数错误",
