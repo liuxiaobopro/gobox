@@ -16,14 +16,15 @@ import (
 
 type File struct {
 	qiniux.Qiniu
-	Bucket string // 空间名
-	ImgUrl string // cdn域名
+	Bucket     string // 空间名
+	ImgUrl     string // cdn域名
+	ServerPath string // 服务器文件路径
 
 	lock sync.Mutex
 
 	service struct {
 		FileName   string // 上传到服务器的文件名
-		FilePath   string // 上传到服务器的文件路径
+		FilePath   string // 本地文件的文件路径
 		IsDelLocal bool   // 上传之后是否删除本地文件
 		Zone       *storage.Zone
 	}
@@ -68,6 +69,12 @@ func WithZone(zone *storage.Zone) option {
 	}
 }
 
+func WithServerPath(serverPath string) option {
+	return func(q *File) {
+		q.ServerPath = serverPath
+	}
+}
+
 func NewFile(opts ...option) *File {
 	q := &File{}
 	for _, opt := range opts {
@@ -100,6 +107,7 @@ func (f *File) UploadFile(file multipart.File, fileHeader *multipart.FileHeader)
 	if err != nil {
 		return "", err
 	}
+
 	// 简单上传的凭证
 	putPolicy := storage.PutPolicy{
 		Scope: f.Bucket,
@@ -131,7 +139,7 @@ func (f *File) UploadFile(file multipart.File, fileHeader *multipart.FileHeader)
 	}
 
 	// err := formUploader.PutWithoutKey(context.Background(), &ret, upToken, file, fileSize, &putExtra)
-	if err := formUploader.PutFile(context.Background(), &ret, upToken, fileName, filePath, &putExtra); err != nil {
+	if err := formUploader.PutFile(context.Background(), &ret, upToken, f.ServerPath+fileName, filePath, &putExtra); err != nil {
 		return "", err
 	}
 	url := fmt.Sprintf("%s/%s", f.ImgUrl, ret.Key)
