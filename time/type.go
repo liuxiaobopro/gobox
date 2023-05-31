@@ -23,3 +23,7 @@ func (t Time) MarshalJSON() ([]byte, error) {
 	var stamp = fmt.Sprintf("\"%s\"", time.Time(t).Format(FormatDateTime))
 	return []byte(stamp), nil
 }
+
+func (t Time) IsZero() bool {
+	return time.Time(t).IsZero()
+}
