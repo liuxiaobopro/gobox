@@ -27,3 +27,7 @@ func (t Time) MarshalJSON() ([]byte, error) {
 func (t Time) IsZero() bool {
 	return time.Time(t).IsZero()
 }
+
+func Now() Time {
+	return Time(time.Now())
+}
