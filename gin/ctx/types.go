@@ -25,15 +25,15 @@ type ICtx interface {
 	PrintInfof(format string, args ...interface{})  // 打印信息日志
 	ShouldBind(obj interface{}) error               // 绑定form
 	ShouldBindJSON(obj interface{}) error           // 绑定json
+	GetCtx() *gin.Context                           // 获取 gin 上下文
 	SetReq(obj interface{})                         // 绑定请求参数
-	GetReq() interface{}                            //获取请求参数
+	GetReq() interface{}                            // 获取请求参数
 
 	FlowHandle()   // 业务逻辑-控制器句柄
 	FlowValidate() // 业务逻辑-参数校验
 	FlowLogic()    // 业务逻辑-业务逻辑
 
 	setCtx(ctx *gin.Context)
-	getCtx() *gin.Context
 	initLog()
 }
 
@@ -98,7 +98,7 @@ func (f *Flow) setCtx(ctx *gin.Context) {
 	f.ctx.Set(definex.TraceId, fmt.Sprintf("%x", md5.Sum([]byte(fmt.Sprintf("%d", time.Now().UnixNano()/1e6)))))
 }
 
-func (f *Flow) getCtx() *gin.Context {
+func (f *Flow) GetCtx() *gin.Context {
 	return f.ctx
 }
 
