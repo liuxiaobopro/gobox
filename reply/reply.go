@@ -9,49 +9,52 @@ type T struct {
 }
 
 var (
-	SuccT        = &T{Code: SuccErrCode, Msg: ErrCodeMsg[SuccErrCode], Data: nil}
-	FailT        = &T{Code: FailErrCode, Msg: ErrCodeMsg[FailErrCode], Data: nil}
-	InternalErrT = &T{Code: InternalErrCode, Msg: ErrCodeMsg[InternalErrCode], Data: nil}
-	ParamErrT    = &T{Code: ParamErrCode, Msg: ErrCodeMsg[ParamErrCode], Data: nil}
-	AuthErrT     = &T{Code: AuthErrCode, Msg: ErrCodeMsg[AuthErrCode], Data: nil}
-	PermErrT     = &T{Code: PermErrCode, Msg: ErrCodeMsg[PermErrCode], Data: nil}
-	ExistErrT    = &T{Code: ExistErrCode, Msg: ErrCodeMsg[ExistErrCode], Data: nil}
-	NotFoundErrT = &T{Code: NotFoundErrCode, Msg: ErrCodeMsg[NotFoundErrCode], Data: nil}
-	LimitErrT    = &T{Code: LimitErrCode, Msg: ErrCodeMsg[LimitErrCode], Data: nil}
-	TimeoutErrT  = &T{Code: TimeoutErrCode, Msg: ErrCodeMsg[TimeoutErrCode], Data: nil}
-	OtherErrT    = &T{Code: OtherErrCode, Msg: ErrCodeMsg[OtherErrCode], Data: nil}
-	MethodErrT   = &T{Code: MethodErrCode, Msg: ErrCodeMsg[MethodErrCode], Data: nil}
+	SuccT          = &T{Code: SuccErrCode, Msg: ErrCodeMsg[SuccErrCode], Data: nil}
+	FailT          = &T{Code: FailErrCode, Msg: ErrCodeMsg[FailErrCode], Data: nil}
+	InternalErrT   = &T{Code: InternalErrCode, Msg: ErrCodeMsg[InternalErrCode], Data: nil}
+	ParamErrT      = &T{Code: ParamErrCode, Msg: ErrCodeMsg[ParamErrCode], Data: nil}
+	AuthErrT       = &T{Code: AuthErrCode, Msg: ErrCodeMsg[AuthErrCode], Data: nil}
+	PermErrT       = &T{Code: PermErrCode, Msg: ErrCodeMsg[PermErrCode], Data: nil}
+	ExistErrT      = &T{Code: ExistErrCode, Msg: ErrCodeMsg[ExistErrCode], Data: nil}
+	NotFoundErrT   = &T{Code: NotFoundErrCode, Msg: ErrCodeMsg[NotFoundErrCode], Data: nil}
+	LimitErrT      = &T{Code: LimitErrCode, Msg: ErrCodeMsg[LimitErrCode], Data: nil}
+	TimeoutErrT    = &T{Code: TimeoutErrCode, Msg: ErrCodeMsg[TimeoutErrCode], Data: nil}
+	OtherErrT      = &T{Code: OtherErrCode, Msg: ErrCodeMsg[OtherErrCode], Data: nil}
+	MethodErrT     = &T{Code: MethodErrCode, Msg: ErrCodeMsg[MethodErrCode], Data: nil}
+	TooManyReqErrT = &T{Code: TooManyReqErrCode, Msg: ErrCodeMsg[TooManyReqErrCode], Data: nil}
 )
 
 const (
 	SuccErrCode RespCode = iota
 	FailErrCode          // 1
 
-	InternalErrCode // 2
-	ParamErrCode    // 3
-	AuthErrCode     // 4
-	PermErrCode     // 5
-	ExistErrCode    // 6
-	NotFoundErrCode // 7
-	LimitErrCode    // 8
-	TimeoutErrCode  // 9
-	OtherErrCode    // 10
-	MethodErrCode   // 11
+	InternalErrCode   // 2
+	ParamErrCode      // 3
+	AuthErrCode       // 4
+	PermErrCode       // 5
+	ExistErrCode      // 6
+	NotFoundErrCode   // 7
+	LimitErrCode      // 8
+	TimeoutErrCode    // 9
+	OtherErrCode      // 10
+	MethodErrCode     // 11
+	TooManyReqErrCode // 12
 )
 
 var ErrCodeMsg = map[RespCode]string{
-	SuccErrCode:     "操作成功",
-	FailErrCode:     "操作失败",
-	InternalErrCode: "内部错误",
-	ParamErrCode:    "参数错误",
-	AuthErrCode:     "认证失败",
-	PermErrCode:     "无权限",
-	ExistErrCode:    "数据已存在",
-	NotFoundErrCode: "数据未找到",
-	LimitErrCode:    "已限制操作",
-	TimeoutErrCode:  "超时错误",
-	OtherErrCode:    "未知错误",
-	MethodErrCode:   "方法错误",
+	SuccErrCode:       "操作成功",
+	FailErrCode:       "操作失败",
+	InternalErrCode:   "内部错误",
+	ParamErrCode:      "参数错误",
+	AuthErrCode:       "认证失败",
+	PermErrCode:       "无权限",
+	ExistErrCode:      "数据已存在",
+	NotFoundErrCode:   "数据未找到",
+	LimitErrCode:      "已限制操作",
+	TimeoutErrCode:    "超时错误",
+	OtherErrCode:      "未知错误",
+	MethodErrCode:     "方法错误",
+	TooManyReqErrCode: "请求频繁",
 }
 
 func (r T) IsSucc() bool {
