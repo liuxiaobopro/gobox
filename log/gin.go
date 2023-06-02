@@ -100,7 +100,7 @@ func (conf *Gin) logf(level Level, c *gin.Context, format string, a ...interface
 
 	if c != nil {
 		if v, has := c.Get(definex.TraceId); has {
-			fmt.Fprintf(&buf, "| %s:%s ", definex.TraceId, v.(string))
+			fmt.Fprintf(&buf, "| %s:%s | ", definex.TraceId, v.(string))
 		}
 	}
 

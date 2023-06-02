@@ -2,31 +2,19 @@ package ctx
 
 import (
 	"encoding/json"
-	"net/http"
 	"reflect"
 
 	"github.com/gin-gonic/gin"
-	replyx "github.com/liuxiaobopro/gobox/reply"
 )
 
 func Use(e ICtx) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		//TODO: panic recover
-		defer func() {
-			if err := recover(); err != nil {
-				e.PrintErrorf("flow panic: %v", err)
-				e.SetHttpCode(http.StatusInternalServerError)
-				e.ReturnJson(replyx.InternalErrT)
-				c.Abort()
-			}
-		}()
-
 		ctl := slave(e).(ICtx)
 		initFlow(c, ctl)
 
-		ctl.Handle()
-		ctl.Validate()
-		ctl.Logic()
+		ctl.FlowHandle()
+		ctl.FlowValidate()
+		ctl.FlowLogic()
 	}
 }
 

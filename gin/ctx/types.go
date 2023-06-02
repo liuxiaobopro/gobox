@@ -18,16 +18,22 @@ const (
 
 type ICtx interface {
 	GetAuthor() string                              // 获取作者
-	ReturnJson(data *replyx.T)                      // 返回 json
 	SetHttpCode(code int)                           // 设置 http code
+	ReturnJson(data *replyx.T)                      // 返回 json
+	ReturnSucc(obj interface{})                     // 返回成功
 	PrintErrorf(format string, args ...interface{}) // 打印错误日志
 	PrintInfof(format string, args ...interface{})  // 打印信息日志
+	ShouldBind(obj interface{}) error               // 绑定form
+	ShouldBindJSON(obj interface{}) error           // 绑定json
+	SetReq(obj interface{})                         // 绑定请求参数
+	GetReq() interface{}                            //获取请求参数
 
-	Handle()   // 业务逻辑-控制器句柄
-	Validate() // 业务逻辑-参数校验
-	Logic()    // 业务逻辑-业务逻辑
+	FlowHandle()   // 业务逻辑-控制器句柄
+	FlowValidate() // 业务逻辑-参数校验
+	FlowLogic()    // 业务逻辑-业务逻辑
 
 	setCtx(ctx *gin.Context)
+	getCtx() *gin.Context
 	initLog()
 }
 
@@ -35,12 +41,7 @@ type Flow struct {
 	ctx      *gin.Context
 	httpCode int
 	logger   *logx.Gin
-}
-
-func (f *Flow) setCtx(ctx *gin.Context) {
-	f.ctx = ctx
-	f.ctx.Set(authorCtxKey, definex.Author)
-	f.ctx.Set(definex.TraceId, fmt.Sprintf("%x", md5.Sum([]byte(fmt.Sprintf("%d", time.Now().UnixNano()/1e6)))))
+	req      interface{}
 }
 
 func (f *Flow) initLog() {
@@ -53,15 +54,15 @@ func (f *Flow) GetAuthor() string {
 	return f.ctx.GetString(authorCtxKey)
 }
 
-func (f *Flow) Handle() {
+func (f *Flow) FlowHandle() {
 	panic("implement func Handle")
 }
 
-func (f *Flow) Validate() {
+func (f *Flow) FlowValidate() {
 	panic("implement func Validate")
 }
 
-func (f *Flow) Logic() {
+func (f *Flow) FlowLogic() {
 	panic("implement func Logic")
 }
 
@@ -75,6 +76,10 @@ func (f *Flow) ReturnJson(data *replyx.T) {
 	f.ctx.JSON(code, data)
 }
 
+func (f *Flow) ReturnSucc(data interface{}) {
+	f.ReturnJson(replyx.Succ(data))
+}
+
 func (f *Flow) SetHttpCode(code int) {
 	f.httpCode = code
 }
@@ -85,4 +90,30 @@ func (f *Flow) PrintErrorf(format string, a ...interface{}) {
 
 func (f *Flow) PrintInfof(format string, a ...interface{}) {
 	logf(InfoLevel, f.ctx, format, a...)
+}
+
+func (f *Flow) setCtx(ctx *gin.Context) {
+	f.ctx = ctx
+	f.ctx.Set(authorCtxKey, definex.Author)
+	f.ctx.Set(definex.TraceId, fmt.Sprintf("%x", md5.Sum([]byte(fmt.Sprintf("%d", time.Now().UnixNano()/1e6)))))
+}
+
+func (f *Flow) getCtx() *gin.Context {
+	return f.ctx
+}
+
+func (f *Flow) ShouldBind(obj interface{}) error {
+	return f.ctx.ShouldBind(obj)
+}
+
+func (f *Flow) SetReq(obj interface{}) {
+	f.req = obj
+}
+
+func (f *Flow) GetReq() interface{} {
+	return f.req
+}
+
+func (f *Flow) ShouldBindJSON(obj interface{}) error {
+	return f.ctx.ShouldBindJSON(obj)
 }
