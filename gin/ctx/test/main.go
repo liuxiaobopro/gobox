@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/liuxiaobopro/gobox/gin/ctx"
 	"github.com/liuxiaobopro/gobox/reply"
 
@@ -11,8 +13,21 @@ type demo struct {
 	ctx.Flow
 }
 
-func (d *demo) Do() {
-	d.ReturnJson(200, &reply.T{
+func (d *demo) Handle() {
+	fmt.Println("handle")
+	d.PrintInfof("handle")
+}
+
+func (d *demo) Validate() {
+	fmt.Println("validate")
+	d.PrintInfof("validate")
+}
+
+func (d *demo) Logic() {
+	fmt.Println("logic")
+	d.PrintInfof("logic")
+
+	d.ReturnJson(&reply.T{
 		Code: 0,
 		Msg:  d.GetAuthor(),
 	})
