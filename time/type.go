@@ -28,6 +28,10 @@ func (t Time) IsZero() bool {
 	return time.Time(t).IsZero()
 }
 
+func (t Time) Format(layout string) string {
+	return time.Time(t).Format(layout)
+}
+
 func Now() Time {
 	return Time(time.Now())
 }
