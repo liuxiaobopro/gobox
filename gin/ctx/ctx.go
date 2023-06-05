@@ -12,9 +12,18 @@ func Use(e ICtx) gin.HandlerFunc {
 		ctl := slave(e).(ICtx)
 		initFlow(c, ctl)
 
-		ctl.FlowHandle()
-		ctl.FlowValidate()
-		ctl.FlowLogic()
+		if err := ctl.FlowHandle(); err != nil {
+			ctl.ReturnJson(err)
+			return
+		}
+		if err := ctl.FlowValidate(); err != nil {
+			ctl.ReturnJson(err)
+			return
+		}
+		if err := ctl.FlowLogic(); err != nil {
+			ctl.ReturnJson(err)
+			return
+		}
 	}
 }
 

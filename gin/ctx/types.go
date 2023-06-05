@@ -29,9 +29,9 @@ type ICtx interface {
 	SetReq(obj interface{})                         // 绑定请求参数
 	GetReq() interface{}                            // 获取请求参数
 
-	FlowHandle()   // 业务逻辑-控制器句柄
-	FlowValidate() // 业务逻辑-参数校验
-	FlowLogic()    // 业务逻辑-业务逻辑
+	FlowHandle() *replyx.T   // 业务逻辑-控制器句柄
+	FlowValidate() *replyx.T // 业务逻辑-参数校验
+	FlowLogic() *replyx.T    // 业务逻辑-业务逻辑
 
 	setCtx(ctx *gin.Context)
 	initLog()
@@ -54,15 +54,15 @@ func (f *Flow) GetAuthor() string {
 	return f.ctx.GetString(authorCtxKey)
 }
 
-func (f *Flow) FlowHandle() {
+func (f *Flow) FlowHandle() *replyx.T {
 	panic("implement func Handle")
 }
 
-func (f *Flow) FlowValidate() {
+func (f *Flow) FlowValidate() *replyx.T {
 	panic("implement func Validate")
 }
 
-func (f *Flow) FlowLogic() {
+func (f *Flow) FlowLogic() *replyx.T {
 	panic("implement func Logic")
 }
 
