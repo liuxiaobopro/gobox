@@ -105,9 +105,8 @@ func Upload(file multipart.File, fileHeader *multipart.FileHeader, filepath stri
 	// 生成文件夹
 	uploadPath := filepath
 	// 创建文件夹
-	pwd, _ := os.Getwd()
-	folder := pwd + uploadPath
-	if err := os.MkdirAll(folder, 0744); err != nil {
+	folder := uploadPath
+	if err := os.MkdirAll(uploadPath, 0744); err != nil {
 		return "", "", err
 	}
 	// 生成文件路径
