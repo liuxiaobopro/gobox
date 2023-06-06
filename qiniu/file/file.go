@@ -23,10 +23,12 @@ type File struct {
 	lock sync.Mutex
 
 	service struct {
-		FileName   string // 上传到服务器的文件名
-		FilePath   string // 本地文件的文件路径
-		IsDelLocal bool   // 上传之后是否删除本地文件
-		Zone       *storage.Zone
+		FileName      string // 上传到服务器的文件名
+		FilePath      string // 本地文件的文件路径
+		IsDelLocal    bool   // 上传之后是否删除本地文件
+		Zone          *storage.Zone
+		UseHTTPS      bool
+		UseCdnDomains bool
 	}
 }
 
@@ -75,8 +77,24 @@ func WithServerPath(serverPath string) option {
 	}
 }
 
+func WithUseHTTPS(useHTTPS bool) option {
+	return func(q *File) {
+		q.service.UseHTTPS = useHTTPS
+	}
+}
+
+func WithUseCdnDomains(useCdnDomains bool) option {
+	return func(q *File) {
+		q.service.UseCdnDomains = useCdnDomains
+	}
+}
+
 func NewFile(opts ...option) *File {
 	q := &File{}
+
+	q.service.UseHTTPS = true
+	q.service.UseCdnDomains = true
+
 	for _, opt := range opts {
 		opt(q)
 	}
@@ -88,6 +106,7 @@ func NewFile(opts ...option) *File {
 	if q.service.Zone == nil {
 		q.service.Zone = &storage.ZoneHuanan
 	}
+
 	return q
 }
 
@@ -108,47 +127,33 @@ func (f *File) UploadFile(file multipart.File, fileHeader *multipart.FileHeader)
 		return "", err
 	}
 
-	// 简单上传的凭证
 	putPolicy := storage.PutPolicy{
 		Scope: f.Bucket,
 	}
 	mac := qbox.NewMac(f.AccessKey, f.SecretKey)
 	upToken := putPolicy.UploadToken(mac)
 
-	// 空间对应机房
-	// 其中关于Zone对象和机房的关系如下：
-	//    华东    storage.ZoneHuadong
-	//    华北    storage.ZoneHuabei
-	//    华南    storage.ZoneHuanan
-	//    北美    storage.ZoneBeimei
 	cfg := storage.Config{
-		Zone:          f.service.Zone, // 七牛云存储空间设置首页有存储区域
-		UseCdnDomains: false,          // 不启用HTTPS域名
-		UseHTTPS:      false,          // 不使用CND加速
+		Region:        f.service.Zone,
+		UseHTTPS:      f.service.UseHTTPS,
+		UseCdnDomains: f.service.UseCdnDomains,
 	}
 
-	// 构建上传表单对象
-	formUploader := storage.NewFormUploader(&cfg)
+	resumeUploader := storage.NewResumeUploaderV2(&cfg)
 	ret := storage.PutRet{}
+	putExtra := storage.RputV2Extra{}
 
-	// 可选
-	putExtra := storage.PutExtra{
-		// Params: map[string]string{
-		// 	"x:name": "github logo",
-		// },
-	}
-
-	// err := formUploader.PutWithoutKey(context.Background(), &ret, upToken, file, fileSize, &putExtra)
-	if err := formUploader.PutFile(context.Background(), &ret, upToken, f.ServerPath+fileName, filePath, &putExtra); err != nil {
+	if err := resumeUploader.PutFile(context.Background(), &ret, upToken, f.ServerPath+fileName, filePath, &putExtra); err != nil {
 		return "", err
 	}
+
 	url := fmt.Sprintf("%s/%s", f.ImgUrl, ret.Key)
 
-	// 删除本地文件
 	if f.service.IsDelLocal {
 		defer func(name string) {
 			_ = os.Remove(name)
 		}(filePath)
 	}
+
 	return url, nil
 }
