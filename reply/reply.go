@@ -22,6 +22,7 @@ var (
 	OtherErrT      = &T{Code: OtherErrCode, Msg: ErrCodeMsg[OtherErrCode], Data: nil}
 	MethodErrT     = &T{Code: MethodErrCode, Msg: ErrCodeMsg[MethodErrCode], Data: nil}
 	TooManyReqErrT = &T{Code: TooManyReqErrCode, Msg: ErrCodeMsg[TooManyReqErrCode], Data: nil}
+	FileFormatErrT = &T{Code: FileFormatErrCode, Msg: ErrCodeMsg[FileFormatErrCode], Data: nil}
 )
 
 const (
@@ -39,6 +40,7 @@ const (
 	OtherErrCode      // 10
 	MethodErrCode     // 11
 	TooManyReqErrCode // 12
+	FileFormatErrCode // 13
 )
 
 var ErrCodeMsg = map[RespCode]string{
@@ -55,6 +57,7 @@ var ErrCodeMsg = map[RespCode]string{
 	OtherErrCode:      "未知错误",
 	MethodErrCode:     "方法错误",
 	TooManyReqErrCode: "请求频繁",
+	FileFormatErrCode: "文件格式错误",
 }
 
 func (r T) IsSucc() bool {
