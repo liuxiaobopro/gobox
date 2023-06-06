@@ -6,6 +6,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"strings"
 	"time"
 
@@ -41,6 +42,8 @@ func Print(logger *logx.Gin) gin.HandlerFunc {
     Request Body: ` + string(reqBody) + `
 `
 		logger.Infof(c, str)
+
+		c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(reqBody))
 
 		strBody := ""
 		blw := bodyLogWriter{bodyBuf: bytes.NewBufferString(""), ResponseWriter: c.Writer}
