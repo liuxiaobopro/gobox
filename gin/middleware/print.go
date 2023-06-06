@@ -29,16 +29,22 @@ func Print(logger *logx.Gin) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		s := time.Now()
 
-		// 获取请求体
-		reqBody, err := ioutil.ReadAll(c.Request.Body)
-		if err != nil {
-			// 处理或记录错误
-			c.AbortWithStatus(500)
-			return
-		}
+		var reqBody []byte
 
-		// 重置请求体
-		c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(reqBody))
+		// 获取Content-Type
+		contentType := c.ContentType()
+		if contentType == "application/json" {
+			// 获取请求体
+			reqBody, err := ioutil.ReadAll(c.Request.Body)
+			if err != nil {
+				// 处理或记录错误
+				c.AbortWithStatus(500)
+				return
+			}
+
+			// 重置请求体
+			c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(reqBody))
+		}
 
 		// 记录请求日志
 		header, _ := json.Marshal(c.Request.Header)
