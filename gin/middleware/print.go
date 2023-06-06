@@ -1,7 +1,5 @@
 package middleware
 
-// 参考链接: https://zhuanlan.zhihu.com/p/94309327
-
 import (
 	"bytes"
 	"encoding/json"
@@ -22,7 +20,7 @@ type bodyLogWriter struct {
 }
 
 func (w bodyLogWriter) Write(b []byte) (int, error) {
-	//memory copy here!
+	// 内存拷贝
 	w.bodyBuf.Write(b)
 	return w.ResponseWriter.Write(b)
 }
@@ -30,36 +28,61 @@ func (w bodyLogWriter) Write(b []byte) (int, error) {
 func Print(logger *logx.Gin) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		s := time.Now()
-		reqBody, _ := c.GetRawData()
-		header, _ := json.Marshal(c.Request.Header)
-		str := `
-    ClientIP: ` + c.ClientIP() + `
-    Request Header: ` + string(header) + `
-    Request Host: ` + c.Request.Host + `
-    Request URI: ` + c.Request.RequestURI + `
-    Request Method: ` + c.Request.Method + `
-    Request Query: ` + fmt.Sprintf("%v", c.Request.URL.Query()) + `
-    Request Body: ` + string(reqBody) + `
-`
-		logger.Infof(c, str)
 
+		// 获取请求体
+		reqBody, err := ioutil.ReadAll(c.Request.Body)
+		if err != nil {
+			// 处理或记录错误
+			c.AbortWithStatus(500)
+			return
+		}
+
+		// 重置请求体
 		c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(reqBody))
 
+		// 记录请求日志
+		header, _ := json.Marshal(c.Request.Header)
+		str := fmt.Sprintf(`
+    ClientIP: %s
+    Request Header: %s
+    Request Host: %s
+    Request URI: %s
+    Request Method: %s
+    Request Query: %v
+    Request Body: %s
+`,
+			c.ClientIP(),
+			string(header),
+			c.Request.Host,
+			c.Request.RequestURI,
+			c.Request.Method,
+			c.Request.URL.Query(),
+			string(reqBody),
+		)
+		logger.Infof(c, str)
+
+		// 捕获响应数据
 		strBody := ""
 		blw := bodyLogWriter{bodyBuf: bytes.NewBufferString(""), ResponseWriter: c.Writer}
 		c.Writer = blw
 
+		// 继续处理请求
 		c.Next()
 
+		// 获取响应数据
 		strBody = strings.Trim(blw.bodyBuf.String(), "\n")
 		if len(strBody) > MAX_PRINT_BODY_LEN {
 			strBody = strBody[:(MAX_PRINT_BODY_LEN - 1)]
 		}
 
-		str1 := `
-    Response Status: ` + fmt.Sprintf("%d", c.Writer.Status()) + `
-    Response Data : ` + strBody + `
-        `
+		// 记录响应日志
+		str1 := fmt.Sprintf(`
+    Response Status: %d
+    Response Data : %s
+`,
+			c.Writer.Status(),
+			strBody,
+		)
 		logger.Infof(c, str1)
 
 		e := time.Now()
