@@ -138,7 +138,7 @@ func (m *mq) AddConsumer(num int, queueName string, consumerName string, callbac
 		go func() {
 			for d := range delivery {
 				callback(d.Body)
-				d.Ack(false)
+				_ = d.Ack(false)
 			}
 			c.done <- nil
 		}()

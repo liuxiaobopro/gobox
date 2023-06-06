@@ -9,7 +9,7 @@ import (
 func main() {
 	r := gin.Default()
 	r.POST("/upload", upload)
-	r.Run(":8081")
+	_ = r.Run(":8081")
 }
 
 // upload 上传

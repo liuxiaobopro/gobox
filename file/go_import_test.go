@@ -7,5 +7,5 @@ func TestAddImportStatement(t *testing.T) {
 	importName := "fmt1"
 	// alias := "f"
 	alias := ""
-	AddImportStatement(fileName, importName, alias)
+	_ = AddImportStatement(fileName, importName, alias)
 }

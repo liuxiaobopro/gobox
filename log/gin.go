@@ -31,6 +31,7 @@ const (
 type Gin struct {
 	Mode  Mode
 	Level Level
+	Sign  string
 }
 
 type GinOption func(c *Gin)
@@ -47,6 +48,12 @@ func WithLevel(level Level) GinOption {
 	}
 }
 
+func WithSign(sign string) GinOption {
+	return func(c *Gin) {
+		c.Sign = sign
+	}
+}
+
 func NewGin(op ...GinOption) *Gin {
 	var c = &Gin{}
 	for _, o := range op {
@@ -59,6 +66,10 @@ func NewGin(op ...GinOption) *Gin {
 
 	if c.Level == "" {
 		c.Level = InfoLevel
+	}
+
+	if c.Sign == "" {
+		c.Sign = "Gobox"
 	}
 
 	return c
@@ -91,7 +102,7 @@ func (conf *Gin) Fatalf(c *gin.Context, format string, a ...interface{}) {
 func (conf *Gin) logf(level Level, c *gin.Context, format string, a ...interface{}) {
 	var buf bytes.Buffer
 
-	fmt.Fprintf(&buf, "[Gobox] | %s | %s ", level, time.Now().Format("2006-01-02 15:04:05"))
+	fmt.Fprintf(&buf, "[%s] | %s | %s ", conf.Sign, level, time.Now().Format("2006-01-02 15:04:05"))
 
 	_, file, line, ok := runtime.Caller(2)
 	if ok {

@@ -83,12 +83,12 @@ func (s *Sms) CreateClient() error {
 	}
 	// 访问的域名
 	config.Endpoint = tea.String("dysmsapi.aliyuncs.com")
-	_result := &dysmsapi20170525.Client{}
-	_result, _err := dysmsapi20170525.NewClient(config)
+	// r1 := &dysmsapi20170525.Client{}
+	r1, _err := dysmsapi20170525.NewClient(config)
 	if _err != nil {
 		return _err
 	}
-	s.service.client = _result
+	s.service.client = r1
 	return nil
 }
 

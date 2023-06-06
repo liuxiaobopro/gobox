@@ -14,14 +14,17 @@ func Use(e ICtx) gin.HandlerFunc {
 
 		if err := ctl.FlowHandle(); err != nil {
 			ctl.ReturnJson(err)
+			c.Abort()
 			return
 		}
 		if err := ctl.FlowValidate(); err != nil {
 			ctl.ReturnJson(err)
+			c.Abort()
 			return
 		}
 		if err := ctl.FlowLogic(); err != nil {
 			ctl.ReturnJson(err)
+			c.Abort()
 			return
 		}
 	}
@@ -33,12 +36,12 @@ func slave(src interface{}) interface{} {
 		typ = typ.Elem()
 		dst := reflect.New(typ).Elem()
 		b, _ := json.Marshal(src)
-		json.Unmarshal(b, dst.Addr().Interface())
+		_ = json.Unmarshal(b, dst.Addr().Interface())
 		return dst.Addr().Interface()
 	} else {
 		dst := reflect.New(typ).Elem()
 		b, _ := json.Marshal(src)
-		json.Unmarshal(b, dst.Addr().Interface())
+		_ = json.Unmarshal(b, dst.Addr().Interface())
 		return dst.Interface()
 	}
 }
