@@ -81,10 +81,10 @@ func TestFindStringsBetween(t *testing.T) {
 }
 
 func TestUploadChunkFile(t *testing.T) {
-	var ak = "7NPqgfSKvc2b8-vg9EA7o18eTHa3qGsCFaOkq8DY"
-	var sk = "YekfJPpdi5J84TZfAZbSHOQWVsTcjXxIfBkMuGKQ"
-	var bucket = "yinpinshenyang"
-	var url = "https://qiniu.xuanwh.com/"
+	var ak = "xxx"
+	var sk = "xxx"
+	var bucket = "xxx"
+	var url = "https://qiniu.xxx.com/"
 
 	putPolicy := storage.PutPolicy{
 		Scope: bucket,
