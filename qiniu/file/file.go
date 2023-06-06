@@ -1,10 +1,14 @@
 package file
 
 import (
+	"bytes"
 	"context"
+	"crypto/md5"
 	"fmt"
+	"io/ioutil"
 	"mime/multipart"
 	"os"
+	"sort"
 	"sync"
 
 	filex "github.com/liuxiaobopro/gobox/file"
@@ -23,12 +27,14 @@ type File struct {
 	lock sync.Mutex
 
 	service struct {
-		FileName      string // 上传到服务器的文件名
-		FilePath      string // 本地文件的文件路径
-		IsDelLocal    bool   // 上传之后是否删除本地文件
-		Zone          *storage.Zone
-		UseHTTPS      bool
-		UseCdnDomains bool
+		Debug         bool          // 是否开启调试模式
+		FileName      string        // 上传到服务器的文件名
+		FilePath      string        // 本地文件的文件路径
+		IsDelLocal    bool          // 上传之后是否删除本地文件
+		Zone          *storage.Zone // 机房
+		UseHTTPS      bool          // 是否使用https域名
+		UseCdnDomains bool          // 是否使用cdn域名
+		ChunkSize     int           // 分片上传的块大小
 	}
 }
 
@@ -89,6 +95,18 @@ func WithUseCdnDomains(useCdnDomains bool) option {
 	}
 }
 
+func WithChunkSize(chunkSize int) option {
+	return func(q *File) {
+		q.service.ChunkSize = chunkSize
+	}
+}
+
+func WithDebug(debug bool) option {
+	return func(q *File) {
+		q.service.Debug = debug
+	}
+}
+
 func NewFile(opts ...option) *File {
 	q := &File{}
 
@@ -105,6 +123,10 @@ func NewFile(opts ...option) *File {
 
 	if q.service.Zone == nil {
 		q.service.Zone = &storage.ZoneHuanan
+	}
+
+	if q.service.ChunkSize == 0 {
+		q.service.ChunkSize = 2 * 1024 * 1024
 	}
 
 	return q
@@ -140,20 +162,93 @@ func (f *File) UploadFile(file multipart.File, fileHeader *multipart.FileHeader)
 	}
 
 	resumeUploader := storage.NewResumeUploaderV2(&cfg)
-	ret := storage.PutRet{}
-	putExtra := storage.RputV2Extra{}
-
-	if err := resumeUploader.PutFile(context.Background(), &ret, upToken, f.ServerPath+fileName, filePath, &putExtra); err != nil {
+	upHost, err := resumeUploader.UpHost(f.AccessKey, f.Bucket)
+	if err != nil {
 		return "", err
 	}
 
-	url := fmt.Sprintf("%s/%s", f.ImgUrl, ret.Key)
-
-	if f.service.IsDelLocal {
-		defer func(name string) {
-			_ = os.Remove(name)
-		}(filePath)
+	// 初始化分块上传
+	key := f.ServerPath + fileName
+	initPartsRet := storage.InitPartsRet{}
+	if err := resumeUploader.InitParts(context.TODO(), upToken, upHost, f.Bucket, key, true, &initPartsRet); err != nil {
+		return "", err
 	}
 
+	fileInfo, err := os.Open(filePath)
+	if err != nil {
+		return "", err
+	}
+	defer fileInfo.Close()
+
+	fileContent, err := ioutil.ReadAll(fileInfo)
+	if err != nil {
+		return "", err
+	}
+	fileLen := len(fileContent)
+	chunkSize2 := f.service.ChunkSize
+
+	num := fileLen / chunkSize2
+	if fileLen%chunkSize2 > 0 {
+		num++
+	}
+
+	if f.service.Debug {
+		fmt.Println("总共分成", num, "片")
+	}
+	// 分块上传
+	var uploadPartInfos = make([]storage.UploadPartInfo, num)
+	var wg sync.WaitGroup
+	wg.Add(num)
+	for i := 1; i <= num; i++ {
+		partNumber := int64(i)
+		if f.service.Debug {
+			fmt.Printf("开始上传第%v片数据\n", partNumber)
+		}
+
+		var partContentBytes []byte
+		endSize := i * chunkSize2
+		if endSize > fileLen {
+			endSize = fileLen
+		}
+		partContentBytes = fileContent[(i-1)*chunkSize2 : endSize]
+		partContentMd5 := fmt.Sprintf("%x", md5.Sum(partContentBytes))
+		go func(partNumber int64, partContentBytes []byte) {
+			defer wg.Done()
+
+			uploadPartsRet := storage.UploadPartsRet{}
+			if err := resumeUploader.UploadParts(context.TODO(), upToken, upHost, f.Bucket, key, true,
+				initPartsRet.UploadID, partNumber, partContentMd5, &uploadPartsRet, bytes.NewReader(partContentBytes),
+				len(partContentBytes)); err != nil {
+				fmt.Printf("上传第%d片数据出错：%v\n", partNumber, err)
+				return
+			}
+
+			uploadPartInfos[partNumber-1] = storage.UploadPartInfo{
+				Etag:       uploadPartsRet.Etag,
+				PartNumber: partNumber,
+			}
+
+			if f.service.Debug {
+				fmt.Printf("完成上传第%d片数据\n", partNumber)
+			}
+		}(partNumber, partContentBytes)
+	}
+	wg.Wait()
+
+	// 对分块上传结果进行排序
+	sort.Slice(uploadPartInfos, func(i, j int) bool {
+		return uploadPartInfos[i].PartNumber < uploadPartInfos[j].PartNumber
+	})
+
+	// 完成上传
+	rPutExtra := storage.RputV2Extra{Progresses: uploadPartInfos}
+	comletePartRet := storage.PutRet{}
+	err = resumeUploader.CompleteParts(context.TODO(), upToken, upHost, &comletePartRet, f.Bucket, key,
+		true, initPartsRet.UploadID, &rPutExtra)
+	if err != nil {
+		return "", err
+	}
+
+	url := f.ImgUrl + "/" + comletePartRet.Key
 	return url, nil
 }
