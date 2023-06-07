@@ -10,6 +10,7 @@ import (
 	"os"
 	"sort"
 	"sync"
+	"time"
 
 	filex "github.com/liuxiaobopro/gobox/file"
 	qiniux "github.com/liuxiaobopro/gobox/qiniu"
@@ -215,6 +216,7 @@ func (f *File) UploadFile(file multipart.File, fileHeader *multipart.FileHeader)
 		go func(partNumber int64, partContentBytes []byte) {
 			defer wg.Done()
 
+			st := time.Now()
 			uploadPartsRet := storage.UploadPartsRet{}
 			if err := resumeUploader.UploadParts(context.TODO(), upToken, upHost, f.Bucket, key, true,
 				initPartsRet.UploadID, partNumber, partContentMd5, &uploadPartsRet, bytes.NewReader(partContentBytes),
@@ -229,7 +231,8 @@ func (f *File) UploadFile(file multipart.File, fileHeader *multipart.FileHeader)
 			}
 
 			if f.service.Debug {
-				fmt.Printf("完成上传第%d片数据\n", partNumber)
+				fmt.Printf("上传第%d片数据成功，耗时：%v\n", partNumber, time.Since(st))
+				// fmt.Printf("完成上传第%d片数据\n", partNumber)
 			}
 		}(partNumber, partContentBytes)
 	}
