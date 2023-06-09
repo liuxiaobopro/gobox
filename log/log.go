@@ -1,27 +1,52 @@
 package log
 
 import (
-	"context"
+	"bytes"
 	"fmt"
 	"runtime"
+	"time"
 )
 
-func Infof(c context.Context, format string, a ...any) {
-	str := "[Gobox-Info]"
-	_, file, line, ok := runtime.Caller(1)
-	if ok {
-		str += fmt.Sprintf(" %s:%d ", file, line)
-	}
-	s := str + format
-	fmt.Printf(s, a...)
+var (
+	Sign = "Gobox"
+)
+
+func Debugf(format string, a ...interface{}) {
+	logf(DebugLevel, format, a...)
 }
 
-func Errorf(c context.Context, format string, a ...any) {
-	str := "[Gobox-Error]"
-	_, file, line, ok := runtime.Caller(1)
+func Infof(format string, a ...interface{}) {
+	logf(InfoLevel, format, a...)
+}
+
+func Warnf(format string, a ...interface{}) {
+	logf(WarnLevel, format, a...)
+}
+
+func Errorf(format string, a ...interface{}) {
+	logf(ErrorLevel, format, a...)
+}
+
+func Panicf(format string, a ...interface{}) {
+	logf(PanicLevel, format, a...)
+}
+
+func Fatalf(format string, a ...interface{}) {
+	logf(FatalLevel, format, a...)
+}
+
+func logf(level Level, format string, a ...interface{}) {
+	var buf bytes.Buffer
+
+	fmt.Fprintf(&buf, "[%s] | %s | %s ", Sign, level, time.Now().Format("2006-01-02 15:04:05"))
+
+	_, file, line, ok := runtime.Caller(2)
 	if ok {
-		str += fmt.Sprintf(" %s:%d ", file, line)
+		fmt.Fprintf(&buf, "| %s:%d ", file, line)
 	}
-	s := str + format
-	fmt.Printf(s, a...)
+
+	fmt.Fprintf(&buf, format, a...)
+	fmt.Fprint(&buf, "\n")
+
+	fmt.Print(buf.String())
 }
