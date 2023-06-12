@@ -5,10 +5,8 @@ import (
 	"fmt"
 	"runtime"
 	"time"
-)
 
-var (
-	Sign = "Gobox"
+	definex "github.com/liuxiaobopro/gobox/define"
 )
 
 func Debugf(format string, a ...interface{}) {
@@ -38,7 +36,7 @@ func Fatalf(format string, a ...interface{}) {
 func logf(level Level, format string, a ...interface{}) {
 	var buf bytes.Buffer
 
-	fmt.Fprintf(&buf, "[%s] | %s | %s ", Sign, level, time.Now().Format("2006-01-02 15:04:05"))
+	fmt.Fprintf(&buf, "[%s] | %s | %s ", definex.Project, level, time.Now().Format("2006-01-02 15:04:05"))
 
 	_, file, line, ok := runtime.Caller(2)
 	if ok {

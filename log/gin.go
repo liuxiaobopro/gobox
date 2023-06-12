@@ -69,7 +69,7 @@ func NewGin(op ...GinOption) *Gin {
 	}
 
 	if c.Sign == "" {
-		c.Sign = "Gobox"
+		c.Sign = definex.Project
 	}
 
 	return c
