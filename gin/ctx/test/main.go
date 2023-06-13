@@ -15,17 +15,17 @@ type demo struct {
 
 func (d *demo) Handle() {
 	fmt.Println("handle")
-	d.PrintInfof("handle")
+	d.LogInfof("handle")
 }
 
 func (d *demo) Validate() {
 	fmt.Println("validate")
-	d.PrintInfof("validate")
+	d.LogInfof("validate")
 }
 
 func (d *demo) Logic() {
 	fmt.Println("logic")
-	d.PrintInfof("logic")
+	d.LogInfof("logic")
 
 	d.ReturnJson(&reply.T{
 		Code: 0,
