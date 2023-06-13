@@ -17,17 +17,17 @@ const (
 )
 
 type ICtx interface {
-	GetAuthor() string                              // 获取作者
-	SetHttpCode(code int)                           // 设置 http code
-	ReturnJson(data *replyx.T)                      // 返回 json
-	ReturnSucc(obj interface{})                     // 返回成功
-	PrintErrorf(format string, args ...interface{}) // 打印错误日志
-	PrintInfof(format string, args ...interface{})  // 打印信息日志
-	ShouldBind(obj interface{}) error               // 绑定form
-	ShouldBindJSON(obj interface{}) error           // 绑定json
-	GetCtx() *gin.Context                           // 获取 gin 上下文
-	SetReq(obj interface{})                         // 绑定请求参数
-	GetReq() interface{}                            // 获取请求参数
+	GetAuthor() string                            // 获取作者
+	SetHttpCode(code int)                         // 设置 http code
+	ReturnJson(data *replyx.T)                    // 返回 json
+	ReturnSucc(obj interface{})                   // 返回成功
+	LogErrorf(format string, args ...interface{}) // 打印错误日志
+	LogInfof(format string, args ...interface{})  // 打印信息日志
+	ShouldBind(obj interface{}) error             // 绑定form
+	ShouldBindJSON(obj interface{}) error         // 绑定json
+	GetCtx() *gin.Context                         // 获取 gin 上下文
+	SetReq(obj interface{})                       // 绑定请求参数
+	GetReq() interface{}                          // 获取请求参数
 
 	FlowHandle() *replyx.T   // 业务逻辑-控制器句柄
 	FlowValidate() *replyx.T // 业务逻辑-参数校验
@@ -84,11 +84,11 @@ func (f *Flow) SetHttpCode(code int) {
 	f.httpCode = code
 }
 
-func (f *Flow) PrintErrorf(format string, a ...interface{}) {
+func (f *Flow) LogErrorf(format string, a ...interface{}) {
 	logf(ErrorLevel, f.ctx, format, a...)
 }
 
-func (f *Flow) PrintInfof(format string, a ...interface{}) {
+func (f *Flow) LogInfof(format string, a ...interface{}) {
 	logf(InfoLevel, f.ctx, format, a...)
 }
 
