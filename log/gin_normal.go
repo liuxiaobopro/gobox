@@ -53,5 +53,21 @@ func ctxlogf(level Level, c *gin.Context, format string, a ...interface{}) {
 	fmt.Fprintf(&buf, format, a...)
 	fmt.Fprint(&buf, "\n")
 
+	if level == DebugLevel {
+		fmt.Print("\033[32m") // 绿色
+	}
+
+	if level == InfoLevel {
+		fmt.Print("\033[36m") // 青色
+	}
+
+	if level == WarnLevel {
+		fmt.Print("\033[33m") // 黄色
+	}
+
+	if level == ErrorLevel || level == PanicLevel || level == FatalLevel {
+		fmt.Print("\033[31m") // 红色
+	}
+
 	fmt.Print(buf.String())
 }
