@@ -28,6 +28,7 @@ type ICtx interface {
 	GetCtx() *gin.Context                         // 获取 gin 上下文
 	SetReq(obj interface{})                       // 绑定请求参数
 	GetReq() interface{}                          // 获取请求参数
+	CloseColor()                                  // 关闭颜色
 
 	FlowHandle() *replyx.T   // 业务逻辑-控制器句柄
 	FlowValidate() *replyx.T // 业务逻辑-参数校验
@@ -112,6 +113,10 @@ func (f *Flow) SetReq(obj interface{}) {
 
 func (f *Flow) GetReq() interface{} {
 	return f.req
+}
+
+func (f *Flow) CloseColor() {
+	f.logger.SetCloseColor(true)
 }
 
 func (f *Flow) ShouldBindJSON(obj interface{}) error {

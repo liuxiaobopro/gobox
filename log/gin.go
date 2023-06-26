@@ -29,9 +29,10 @@ const (
 )
 
 type Gin struct {
-	Mode  Mode
-	Level Level
-	Sign  string
+	Mode         Mode
+	Level        Level
+	Sign         string
+	IsCloseColor bool
 }
 
 type GinOption func(c *Gin)
@@ -54,8 +55,16 @@ func WithSign(sign string) GinOption {
 	}
 }
 
+func WithIsCloseColor(closeColor bool) GinOption {
+	return func(c *Gin) {
+		c.IsCloseColor = closeColor
+	}
+}
+
 func NewGin(op ...GinOption) *Gin {
-	var c = &Gin{}
+	var c = &Gin{
+		IsCloseColor: false,
+	}
 	for _, o := range op {
 		o(c)
 	}
@@ -99,6 +108,10 @@ func (conf *Gin) Fatalf(c *gin.Context, format string, a ...interface{}) {
 	conf.logf(FatalLevel, c, format, a...)
 }
 
+func (conf *Gin) SetCloseColor(closeColor bool) {
+	conf.IsCloseColor = closeColor
+}
+
 func (conf *Gin) logf(level Level, c *gin.Context, format string, a ...interface{}) {
 	var buf bytes.Buffer
 
@@ -118,21 +131,24 @@ func (conf *Gin) logf(level Level, c *gin.Context, format string, a ...interface
 	fmt.Fprintf(&buf, format, a...)
 	fmt.Fprint(&buf, "\n")
 
-	if level == DebugLevel {
-		fmt.Print("\033[32m") // 绿色
-	}
+	if !conf.IsCloseColor {
+		if level == DebugLevel {
+			fmt.Print("\033[32m") // 绿色
+		}
 
-	if level == InfoLevel {
-		fmt.Print("\033[36m") // 青色
-	}
+		if level == InfoLevel {
+			fmt.Print("\033[36m") // 青色
+		}
 
-	if level == WarnLevel {
-		fmt.Print("\033[33m") // 黄色
-	}
+		if level == WarnLevel {
+			fmt.Print("\033[33m") // 黄色
+		}
 
-	if level == ErrorLevel || level == PanicLevel || level == FatalLevel {
-		fmt.Print("\033[31m") // 红色
+		if level == ErrorLevel || level == PanicLevel || level == FatalLevel {
+			fmt.Print("\033[31m") // 红色
+		}
 	}
 
 	fmt.Print(buf.String())
+	fmt.Print("\033[0m") // 还原颜色
 }
