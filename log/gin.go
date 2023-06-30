@@ -151,4 +151,6 @@ func (conf *Gin) logf(level Level, c *gin.Context, format string, a ...interface
 
 	fmt.Print(buf.String())
 	fmt.Print("\033[0m") // 还原颜色
+	fmt.Print("\033[0m") // 还原颜色
+	fmt.Print("\033[0m") // 还原颜色
 }
