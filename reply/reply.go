@@ -79,6 +79,10 @@ func (r T) GetData() interface{} {
 	return r.Data
 }
 
+func (r T) Error() string {
+	return r.Msg
+}
+
 func Succ(data interface{}) *T {
 	return &T{
 		Code: SuccErrCode,
