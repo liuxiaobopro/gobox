@@ -78,7 +78,8 @@ func Print(logger *logx.Gin) gin.HandlerFunc {
 		// 获取响应数据
 		strBody = strings.Trim(blw.bodyBuf.String(), "\n")
 		if len(strBody) > MAX_PRINT_BODY_LEN {
-			strBody = strBody[:(MAX_PRINT_BODY_LEN - 1)]
+			// strBody = strBody[:(MAX_PRINT_BODY_LEN - 1)]
+			strBody = "body too long, not print"
 		}
 
 		// 记录响应日志
