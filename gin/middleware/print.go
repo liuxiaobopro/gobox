@@ -35,12 +35,15 @@ func Print(logger *logx.Gin) gin.HandlerFunc {
 		contentType := c.ContentType()
 		if contentType == "application/json" {
 			// 获取请求体
-			reqBody, err := ioutil.ReadAll(c.Request.Body)
+			// reqBody, err := ioutil.ReadAll(c.Request.Body)
+			var req map[string]interface{}
+			err := json.NewDecoder(c.Request.Body).Decode(&req)
 			if err != nil {
 				// 处理或记录错误
 				c.AbortWithStatus(500)
 				return
 			}
+			reqBody, _ := json.Marshal(req)
 
 			// 重置请求体
 			c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(reqBody))
@@ -48,13 +51,14 @@ func Print(logger *logx.Gin) gin.HandlerFunc {
 
 		// 记录请求日志
 		header, _ := json.Marshal(c.Request.Header)
+		param, _ := json.Marshal(c.Request.URL.Query())
 		str := fmt.Sprintf(`
-    ClientIP: %s
+	Request ClientIP: %s
     Request Header: %s
     Request Host: %s
     Request URI: %s
     Request Method: %s
-    Request Query: %v
+    Request Param: %v
     Request Body: %s
 `,
 			c.ClientIP(),
@@ -62,7 +66,7 @@ func Print(logger *logx.Gin) gin.HandlerFunc {
 			c.Request.Host,
 			c.Request.RequestURI,
 			c.Request.Method,
-			c.Request.URL.Query(),
+			param,
 			string(reqBody),
 		)
 		logger.Infof(c, str)
