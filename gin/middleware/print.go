@@ -88,18 +88,18 @@ func Print(logger *logx.Gin) gin.HandlerFunc {
 			strBody = "body too long, not print"
 		}
 
+		e := time.Now()
+		latency := e.Sub(s)
 		// 记录响应日志
 		str1 := fmt.Sprintf(`
     Response Status: %d
     Response Data : %s
+    Response Latency : %s
 `,
 			c.Writer.Status(),
 			strBody,
+			latency,
 		)
 		logger.Infof(c, str1)
-
-		e := time.Now()
-		latency := e.Sub(s)
-		logger.Infof(c, "Print latency: %s", latency)
 	}
 }
