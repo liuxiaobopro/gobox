@@ -53,7 +53,7 @@ func Print(logger *logx.Gin) gin.HandlerFunc {
 		header, _ := json.Marshal(c.Request.Header)
 		param := c.Request.URL.Query()
 		str := fmt.Sprintf(`
-	Request ClientIP: %s
+    Request ClientIP: %s
     Request Header: %s
     Request Host: %s
     Request URI: %s
