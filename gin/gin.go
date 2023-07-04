@@ -1,7 +1,9 @@
 package gin
 
 import (
+	"bytes"
 	"encoding/json"
+	"io/ioutil"
 
 	"github.com/gin-gonic/gin"
 	definex "github.com/liuxiaobopro/gobox/define"
@@ -18,5 +20,8 @@ func GetBody(c *gin.Context) string {
 	var rMap map[string]interface{}
 	_ = json.NewDecoder(c.Request.Body).Decode(&rMap)
 	b, _ := json.Marshal(rMap)
+
+	c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(b))
+
 	return string(b)
 }

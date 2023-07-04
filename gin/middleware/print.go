@@ -4,11 +4,11 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
+	ginx "github.com/liuxiaobopro/gobox/gin"
 	logx "github.com/liuxiaobopro/gobox/log"
 )
 
@@ -34,19 +34,21 @@ func Print(logger *logx.Gin) gin.HandlerFunc {
 		// 获取Content-Type
 		contentType := c.ContentType()
 		if contentType == "application/json" {
-			// 获取请求体
+			// // 获取请求体
 			// reqBody, err := ioutil.ReadAll(c.Request.Body)
-			var req map[string]interface{}
-			err := json.NewDecoder(c.Request.Body).Decode(&req)
-			if err != nil {
-				// 处理或记录错误
-				c.AbortWithStatus(500)
-				return
-			}
-			reqBody, _ := json.Marshal(req)
+			// // var req map[string]interface{}
+			// // err := json.NewDecoder(c.Request.Body).Decode(&req)
+			// if err != nil {
+			// 	// 处理或记录错误
+			// 	c.AbortWithStatus(500)
+			// 	return
+			// }
+			// // reqBody, _ := json.Marshal(req)
 
-			// 重置请求体
-			c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(reqBody))
+			// // 重置请求体
+			// c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(reqBody))
+			s := ginx.GetBody(c)
+			reqBody = []byte(s)
 		}
 
 		// 记录请求日志
