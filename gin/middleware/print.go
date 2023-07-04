@@ -53,7 +53,7 @@ func Print(logger *logx.Gin) gin.HandlerFunc {
 
 		// 记录请求日志
 		header, _ := json.Marshal(c.Request.Header)
-		param := c.Request.URL.Query()
+		param := ginx.GetParam(c)
 		str := fmt.Sprintf(`
     Request ClientIP: %s
     Request Header: %s

@@ -25,3 +25,15 @@ func GetBody(c *gin.Context) string {
 
 	return string(b)
 }
+
+func GetParam(c *gin.Context) string {
+	var rMap = make(map[string][]string)
+
+	param := c.Request.URL.Query()
+	for k, v := range param {
+		rMap[k] = v[:]
+	}
+
+	b, _ := json.Marshal(rMap)
+	return string(b)
+}
