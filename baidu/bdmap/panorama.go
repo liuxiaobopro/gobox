@@ -104,7 +104,7 @@ func NewPanorama(ak string, opts ...PanoramaOption) *Panorama {
 }
 
 // Panorama 全景图 (文档: https://lbs.baidu.com/faq/api?title=viewstatic-base)
-func (th *Panorama) Panorama() (interface{}, error) {
+func (th *Panorama) Panorama() ([]byte, error) {
 	bb, _ := json.Marshal(th)
 
 	var m map[string]string
