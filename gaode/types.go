@@ -13,7 +13,7 @@ type GeocodeItem struct {
 	Country          string      `json:"country,omitempty"`
 	Province         string      `json:"province,omitempty"`
 	CityCode         string      `json:"citycode,omitempty"`
-	City             string      `json:"city,omitempty"`
+	City             interface{} `json:"city,omitempty"`
 	District         interface{} `json:"district,omitempty"`
 	Township         []string    `json:"township,omitempty"`
 	Neighborhood     struct {
