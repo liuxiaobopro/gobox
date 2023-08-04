@@ -42,7 +42,7 @@ const (
 	MethodErrCode     // 11
 	TooManyReqErrCode // 12
 	FileFormatErrCode // 13
-	EqualErrCode
+	EqualErrCode      // 14
 )
 
 var ErrCodeMsg = map[RespCode]string{

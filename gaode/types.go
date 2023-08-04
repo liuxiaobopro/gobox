@@ -9,13 +9,13 @@ type GeocodeRes struct {
 }
 
 type GeocodeItem struct {
-	FormattedAddress string   `json:"formatted_address,omitempty"`
-	Country          string   `json:"country,omitempty"`
-	Province         string   `json:"province,omitempty"`
-	CityCode         string   `json:"citycode,omitempty"`
-	City             string   `json:"city,omitempty"`
-	District         string   `json:"district,omitempty"`
-	Township         []string `json:"township,omitempty"`
+	FormattedAddress string      `json:"formatted_address,omitempty"`
+	Country          string      `json:"country,omitempty"`
+	Province         string      `json:"province,omitempty"`
+	CityCode         string      `json:"citycode,omitempty"`
+	City             string      `json:"city,omitempty"`
+	District         interface{} `json:"district,omitempty"`
+	Township         []string    `json:"township,omitempty"`
 	Neighborhood     struct {
 		Name []string `json:"name,omitempty"`
 		Type []string `json:"type,omitempty"`
