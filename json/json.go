@@ -34,7 +34,7 @@ func (c JsonSnakeCase) MarshalJSON() ([]byte, error) {
 	return converted, err
 }
 
-/*************************************** 驼峰json ***************************************/
+/*************************************** 小驼峰json ***************************************/
 type JsonCamelCase struct {
 	Value interface{}
 }
@@ -48,6 +48,26 @@ func (c JsonCamelCase) MarshalJSON() ([]byte, error) {
 			matchStr := string(match)
 			key := matchStr[1 : len(matchStr)-2]
 			resKey := Lcfirst(Case2Camel(key))
+			return []byte(`"` + resKey + `":`)
+		},
+	)
+	return converted, err
+}
+
+/*************************************** 大驼峰json ***************************************/
+type JsonBigCamelCase struct {
+	Value interface{}
+}
+
+func (c JsonBigCamelCase) MarshalJSON() ([]byte, error) {
+	var keyMatchRegex = regexp.MustCompile(`\"(\w+)\":`)
+	marshalled, err := json.Marshal(c.Value)
+	converted := keyMatchRegex.ReplaceAllFunc(
+		marshalled,
+		func(match []byte) []byte {
+			matchStr := string(match)
+			key := matchStr[1 : len(matchStr)-2]
+			resKey := Ucfirst(Case2Camel(key))
 			return []byte(`"` + resKey + `":`)
 		},
 	)
