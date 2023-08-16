@@ -98,6 +98,12 @@ func (*GinHandle) ReturnErr(c *gin.Context, r *replyx.T) {
 	c.JSON(http.StatusBadRequest, r)
 }
 
+// ReturnStatusOKErr 返回错误json(http=200)
+// 例如：ReturnStatusOKErr(c, respx.ParamErrT.ToPt()) => ReturnJSON(c, http.StatusOK, respx.ParamErrT.ToPt())
+func (*GinHandle) ReturnStatusOKErr(c *gin.Context, r *replyx.T) {
+	c.JSON(http.StatusOK, r)
+}
+
 // RetuenHTML 返回html
 // 例如：RetuenHTML(c, "index.html", data)
 func (*GinHandle) RetuenHTML(c *gin.Context, name string, data interface{}) {
