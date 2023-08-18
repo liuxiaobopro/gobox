@@ -107,8 +107,10 @@ func FirstLow(s string) string {
 func ReplaceCharAfterSpecifiedCharUp(s, c string) (out string) {
 	arr := strings.Split(s, c)
 	for _, v := range arr {
-		v = strings.ToLower(v)
-		out += FirstUp(v)
+		v1 := v[0:1]
+		v2 := v[1:]
+		v = strings.ToLower(v1)
+		out += FirstUp(v + v2)
 	}
 	return
 }
@@ -116,15 +118,17 @@ func ReplaceCharAfterSpecifiedCharUp(s, c string) (out string) {
 // ReplaceCharAfterSpecifiedCharLow 替换指定字符后面的字符为小驼峰
 // 例如：ReplaceCharAfterSpecifiedCharLow("abc/def/ghi", '/') => "abcDefGhi"
 func ReplaceCharAfterSpecifiedCharLow(s, c string) (out string) {
-	arr := strings.Split(s, c)
-	for k, v := range arr {
-		if k == 0 {
-			out += v
-			continue
-		}
-		v = strings.ToLower(v)
-		out += FirstUp(v)
-	}
+	// arr := strings.Split(s, c)
+	// for k, v := range arr {
+	// 	if k == 0 {
+	// 		out += v
+	// 		continue
+	// 	}
+	// 	v = strings.ToLower(v)
+	// 	out += FirstUp(v)
+	// }
+	str := ReplaceCharAfterSpecifiedCharUp(s, c)
+	out = FirstLow(str)
 	return
 }
 

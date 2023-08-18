@@ -140,6 +140,14 @@ func TestReplaceCharAfterSpecifiedCharUp(t *testing.T) {
 			},
 			want: "AbcDefGhi",
 		},
+		{
+			name: "test2",
+			args: args{
+				s: "abc/def/ghiJKL",
+				c: "/",
+			},
+			want: "AbcDefGhiJKL",
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
