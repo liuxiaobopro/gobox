@@ -176,6 +176,14 @@ func TestReplaceCharAfterSpecifiedCharLow(t *testing.T) {
 			},
 			wantOut: "abcDefGhi",
 		},
+		{
+			name: "test2",
+			args: args{
+				s: "app/demo/demo",
+				c: "/",
+			},
+			wantOut: "appDemoDemo",
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
