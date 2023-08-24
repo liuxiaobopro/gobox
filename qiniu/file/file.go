@@ -127,7 +127,7 @@ func NewFile(opts ...option) *File {
 	}
 
 	if q.service.ChunkSize == 0 {
-		q.service.ChunkSize = 2 * 1024 * 1024
+		q.service.ChunkSize = 10 * 1024 * 1024
 	}
 
 	return q
@@ -200,11 +200,9 @@ func (f *File) UploadFile(file multipart.File, fileHeader *multipart.FileHeader)
 	var uploadPartInfos = make([]storage.UploadPartInfo, num)
 	var wg sync.WaitGroup
 	wg.Add(num)
+
 	for i := 1; i <= num; i++ {
 		partNumber := int64(i)
-		if f.service.Debug {
-			fmt.Printf("开始上传第%v片数据\n", partNumber)
-		}
 
 		var partContentBytes []byte
 		endSize := i * chunkSize2
@@ -215,6 +213,10 @@ func (f *File) UploadFile(file multipart.File, fileHeader *multipart.FileHeader)
 		partContentMd5 := fmt.Sprintf("%x", md5.Sum(partContentBytes))
 		go func(partNumber int64, partContentBytes []byte) {
 			defer wg.Done()
+
+			if f.service.Debug {
+				fmt.Printf("开始上传第%v片数据\n", partNumber)
+			}
 
 			st := time.Now()
 			uploadPartsRet := storage.UploadPartsRet{}
@@ -230,13 +232,20 @@ func (f *File) UploadFile(file multipart.File, fileHeader *multipart.FileHeader)
 				PartNumber: partNumber,
 			}
 
+			et := time.Now()
+			l := et.Sub(st)
+
 			if f.service.Debug {
-				fmt.Printf("上传第%d片数据成功，耗时：%v\n", partNumber, time.Since(st))
+				fmt.Printf("上传第%d片数据成功，耗时：%v\n", partNumber, l)
 				// fmt.Printf("完成上传第%d片数据\n", partNumber)
 			}
 		}(partNumber, partContentBytes)
 	}
 	wg.Wait()
+
+	if f.service.Debug {
+		fmt.Println("等待所有分片上传完成")
+	}
 
 	// 对分块上传结果进行排序
 	sort.Slice(uploadPartInfos, func(i, j int) bool {
