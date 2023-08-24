@@ -264,3 +264,36 @@ func (f *File) UploadFile(file multipart.File, fileHeader *multipart.FileHeader)
 	url := f.ImgUrl + "/" + comletePartRet.Key
 	return url, nil
 }
+
+func (f *File) SplitUpload(file multipart.File, fileHeader *multipart.FileHeader) (string, error) {
+	f.lock.Lock()
+	defer f.lock.Unlock()
+
+	filePath, fileName, err := filex.Upload(file, fileHeader, f.service.FilePath, f.service.FileName)
+	if err != nil {
+		return "", err
+	}
+
+	putPolicy := storage.PutPolicy{
+		Scope: f.Bucket,
+	}
+	mac := qbox.NewMac(f.AccessKey, f.SecretKey)
+	upToken := putPolicy.UploadToken(mac)
+
+	cfg := storage.Config{
+		Region:        f.service.Zone,
+		UseHTTPS:      f.service.UseHTTPS,
+		UseCdnDomains: f.service.UseCdnDomains,
+	}
+
+	resumeUploader := storage.NewResumeUploaderV2(&cfg)
+	ret := storage.PutRet{}
+	putExtra := storage.RputV2Extra{}
+
+	if err := resumeUploader.PutFile(context.Background(), &ret, upToken, f.ServerPath+fileName, filePath, &putExtra); err != nil {
+		return "", err
+	}
+
+	url := f.ImgUrl + "/" + ret.Key
+	return url, nil
+}
