@@ -12,7 +12,7 @@ import (
 	logx "github.com/liuxiaobopro/gobox/log"
 )
 
-const MAX_PRINT_BODY_LEN = 512000
+const MAX_PRINT_BODY_LEN = 5120
 
 type bodyLogWriter struct {
 	gin.ResponseWriter
