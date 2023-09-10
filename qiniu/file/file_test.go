@@ -57,3 +57,25 @@ func TestNewQiniu(t *testing.T) {
 
 	// r.Run(":8080")
 }
+
+func TestFile_UploadFileByPath(t *testing.T) {
+	qiniu := NewFile(
+		WithDebug(true),
+		WithKey("xxxx", "xxx"),
+		WithBucket("xxx"),
+		WithImgUrl("https://xxxx"),
+		WithZone(&storage.ZoneHuabei),
+		WithIsDelLocal(true),
+		WithServerPath("xxx"),
+		WithFilePathAndFileName("D:\\1liuxiaobo\\Desktop\\1111.png", "666.png"),
+	)
+
+	res, err := qiniu.UploadFileByPath()
+
+	if err != nil {
+		t.Errorf("qiniu.UploadFileByPath() error(%v)", err)
+		return
+	}
+
+	fmt.Println(res)
+}

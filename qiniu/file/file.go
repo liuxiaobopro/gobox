@@ -108,6 +108,21 @@ func WithDebug(debug bool) option {
 	}
 }
 
+func WithFilePathAndFileName(filePath, fileName string) option {
+	return func(q *File) {
+		q.service.FilePath = filePath
+		q.service.FileName = fileName
+	}
+}
+
+func (f *File) SetFilePath(filePath string) {
+	f.service.FilePath = filePath
+}
+
+func (f *File) SetFileName(fileName string) {
+	f.service.FileName = fileName
+}
+
 func NewFile(opts ...option) *File {
 	q := &File{}
 
@@ -133,14 +148,6 @@ func NewFile(opts ...option) *File {
 	return q
 }
 
-func (f *File) SetFilePath(filePath string) {
-	f.service.FilePath = filePath
-}
-
-func (f *File) SetFileName(fileName string) {
-	f.service.FileName = fileName
-}
-
 func (f *File) UploadFile(file multipart.File, fileHeader *multipart.FileHeader) (string, error) {
 	f.lock.Lock()
 	defer f.lock.Unlock()
@@ -150,6 +157,10 @@ func (f *File) UploadFile(file multipart.File, fileHeader *multipart.FileHeader)
 		return "", err
 	}
 
+	return f.upload(filePath, fileName)
+}
+
+func (f *File) upload(filePath, fileName string) (string, error) {
 	putPolicy := storage.PutPolicy{
 		Scope: f.Bucket,
 	}
@@ -296,4 +307,8 @@ func (f *File) SplitUpload(file multipart.File, fileHeader *multipart.FileHeader
 
 	url := f.ImgUrl + "/" + ret.Key
 	return url, nil
+}
+
+func (f *File) UploadFileByPath() (string, error) {
+	return f.upload(f.service.FilePath, f.service.FileName)
 }
