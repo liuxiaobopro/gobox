@@ -327,8 +327,22 @@ func (f *File) DeleteFile(fileName string) error {
 	}
 	bucketManager := storage.NewBucketManager(mac, &cfg)
 
-	err := bucketManager.Delete(f.Bucket, f.ServerPath+fileName)
+	//#region 查询文件是否存在
+	statRet, err := bucketManager.Stat(f.Bucket, f.ServerPath+fileName)
 	if err != nil {
+		if err.Error() == "no such file or directory" {
+			return nil
+		}
+
+		return err
+	}
+
+	if statRet.Hash == "" {
+		return nil
+	}
+	//#endregion
+
+	if err := bucketManager.Delete(f.Bucket, f.ServerPath+fileName); err != nil {
 		return err
 	}
 
