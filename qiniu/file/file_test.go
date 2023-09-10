@@ -79,3 +79,26 @@ func TestFile_UploadFileByPath(t *testing.T) {
 
 	fmt.Println(res)
 }
+
+func TestFile_DeleteFile(t *testing.T) {
+	qiniu := NewFile(
+		WithDebug(true),
+		WithKey("7NPqgfSKvc2b8-vg9EA7o18eTHa3qGsCFaOkq8DY", "YekfJPpdi5J84TZfAZbSHOQWVsTcjXxIfBkMuGKQ"),
+		WithBucket("yinpinshenyang"),
+		WithImgUrl("https://qiniu.xuanwh.com"),
+		WithZone(&storage.ZoneHuabei),
+		WithIsDelLocal(true),
+		WithServerPath("geojson/"),
+		WithFilePathAndFileName("D:\\1liuxiaobo\\Desktop\\1111.png", "666.png"),
+	)
+
+	err := qiniu.DeleteFile("vr_test.geojson")
+
+	if err != nil {
+		t.Errorf("qiniu.UploadFileByPath() error(%v)", err)
+		return
+	}
+
+	t.Log("success")
+
+}

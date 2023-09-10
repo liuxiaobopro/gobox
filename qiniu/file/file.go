@@ -148,6 +148,7 @@ func NewFile(opts ...option) *File {
 	return q
 }
 
+// UploadFile 上传文件(网络请求)
 func (f *File) UploadFile(file multipart.File, fileHeader *multipart.FileHeader) (string, error) {
 	f.lock.Lock()
 	defer f.lock.Unlock()
@@ -160,6 +161,7 @@ func (f *File) UploadFile(file multipart.File, fileHeader *multipart.FileHeader)
 	return f.upload(filePath, fileName)
 }
 
+// UploadFile 上传文件(本地文件)
 func (f *File) upload(filePath, fileName string) (string, error) {
 	putPolicy := storage.PutPolicy{
 		Scope: f.Bucket,
@@ -276,6 +278,7 @@ func (f *File) upload(filePath, fileName string) (string, error) {
 	return url, nil
 }
 
+// SplitUploadFile 上传文件(网络请求)
 func (f *File) SplitUpload(file multipart.File, fileHeader *multipart.FileHeader) (string, error) {
 	f.lock.Lock()
 	defer f.lock.Unlock()
@@ -309,6 +312,25 @@ func (f *File) SplitUpload(file multipart.File, fileHeader *multipart.FileHeader
 	return url, nil
 }
 
+// UploadFileByPath 上传文件(本地文件)
 func (f *File) UploadFileByPath() (string, error) {
 	return f.upload(f.service.FilePath, f.service.FileName)
+}
+
+// DeleteFile 删除文件
+func (f *File) DeleteFile(fileName string) error {
+	mac := qbox.NewMac(f.AccessKey, f.SecretKey)
+	cfg := storage.Config{
+		Region:        f.service.Zone,
+		UseHTTPS:      f.service.UseHTTPS,
+		UseCdnDomains: f.service.UseCdnDomains,
+	}
+	bucketManager := storage.NewBucketManager(mac, &cfg)
+
+	err := bucketManager.Delete(f.Bucket, f.ServerPath+fileName)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
