@@ -32,11 +32,11 @@ type GeocodeItem struct {
 }
 
 type Tip struct {
-	ID       string      `json:"id,omitempty"`
+	ID       interface{} `json:"id,omitempty"`
 	Name     string      `json:"name,omitempty"`
 	District string      `json:"district,omitempty"`
 	Adcode   string      `json:"adcode,omitempty"`
-	Location string      `json:"location,omitempty"`
+	Location interface{} `json:"location,omitempty"`
 	Address  interface{} `json:"address,omitempty"`
 	Typecode string      `json:"typecode,omitempty"`
 	City     interface{} `json:"city,omitempty"`
