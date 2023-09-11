@@ -76,5 +76,5 @@ func (g *Geocoding) Query() ([]byte, error) {
 }
 
 func (g *Geocoding) url() string {
-	return fmt.Sprintf("https://api.mapbox.com/geocoding/v5/mapbox.places/%s.json?country=%s&language=%s&access_token=%s", g.Q, g.Country, g.Language, g.AccessToken)
+	return fmt.Sprintf("https://api.mapbox.com/geocoding/v5/mapbox.places/%s.json?country=%s&language=%s&access_token=%s&limit=10", g.Q, g.Country, g.Language, g.AccessToken)
 }
