@@ -30,3 +30,22 @@ type GeocodeItem struct {
 	Location string   `json:"location,omitempty"`
 	Level    string   `json:"level,omitempty"`
 }
+
+type Tip struct {
+	ID       string      `json:"id,omitempty"`
+	Name     string      `json:"name,omitempty"`
+	District string      `json:"district,omitempty"`
+	Adcode   string      `json:"adcode,omitempty"`
+	Location string      `json:"location,omitempty"`
+	Address  interface{} `json:"address,omitempty"`
+	Typecode string      `json:"typecode,omitempty"`
+	City     interface{} `json:"city,omitempty"`
+}
+
+type TipsRes struct {
+	Tips     []Tip  `json:"tips,omitempty"`
+	Status   string `json:"status,omitempty"`
+	Info     string `json:"info,omitempty"`
+	Infocode string `json:"infocode,omitempty"`
+	Count    string `json:"count,omitempty"`
+}
