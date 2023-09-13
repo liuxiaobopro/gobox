@@ -214,3 +214,13 @@ func UniqueFileName(f *multipart.FileHeader) string {
 	fileName = fmt.Sprintf("%s_%s%s", fileName, crypto.Md5(strconv.Itoa(int(time.Now().UnixNano()))), fileSuffix)
 	return fileName
 }
+
+// 判断字符串是否存在中文
+func HasChinese(s string) bool {
+	for _, v := range s {
+		if v > 0x4e00 && v < 0x9fff {
+			return true
+		}
+	}
+	return false
+}

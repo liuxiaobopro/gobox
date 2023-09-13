@@ -260,3 +260,43 @@ func TestRandFor(t *testing.T) {
 func TestRandStrArr(t *testing.T) {
 	fmt.Println("RandStrArr: ", RandStrArr(20, 10))
 }
+
+func TestHasChinese(t *testing.T) {
+	type args struct {
+		s string
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{
+			name: "test1",
+			args: args{
+				s: "abc",
+			},
+			want: false,
+		},
+		{
+			name: "test2",
+			args: args{
+				s: "abc中文",
+			},
+			want: true,
+		},
+		{
+			name: "test3",
+			args: args{
+				s: "中文",
+			},
+			want: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := HasChinese(tt.args.s); got != tt.want {
+				t.Errorf("HasChinese() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
