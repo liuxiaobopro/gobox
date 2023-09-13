@@ -55,3 +55,14 @@ func NowTimeStr() string {
 func NowTimeStamp() int {
 	return int(time.Now().Unix())
 }
+
+// CheckSETime 检查开始时间和结束时间
+func CheckSETime(startTime, endTime string) bool {
+	if startTime == "" || endTime == "" {
+		return false
+	}
+	if StringToInt(startTime) > StringToInt(endTime) {
+		return false
+	}
+	return true
+}

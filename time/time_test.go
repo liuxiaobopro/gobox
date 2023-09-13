@@ -99,3 +99,47 @@ func TestIntToStringTime(t *testing.T) {
 		})
 	}
 }
+
+func TestCheckSETime(t *testing.T) {
+	type args struct {
+		startTime string
+		endTime   string
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{
+			name: "test1",
+			args: args{
+				startTime: "2023-04-19 00:12:58",
+				endTime:   "2023-04-19 00:12:58",
+			},
+			want: true,
+		},
+		{
+			name: "test2",
+			args: args{
+				startTime: "2023-04-19 00:12:58",
+				endTime:   "2023-04-19 00:12:57",
+			},
+			want: false,
+		},
+		{
+			name: "test3",
+			args: args{
+				startTime: "2023-04-19 00:12:58",
+				endTime:   "2023-04-19 00:12:59",
+			},
+			want: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := CheckSETime(tt.args.startTime, tt.args.endTime); got != tt.want {
+				t.Errorf("CheckSETime() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
