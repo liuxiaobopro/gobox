@@ -9,21 +9,21 @@ type T struct {
 }
 
 var (
-	SuccT          = &T{Code: SuccErrCode, Msg: ErrCodeMsg[SuccErrCode], Data: nil}
-	FailT          = &T{Code: FailErrCode, Msg: ErrCodeMsg[FailErrCode], Data: nil}
-	InternalErrT   = &T{Code: InternalErrCode, Msg: ErrCodeMsg[InternalErrCode], Data: nil}
-	ParamErrT      = &T{Code: ParamErrCode, Msg: ErrCodeMsg[ParamErrCode], Data: nil}
-	AuthErrT       = &T{Code: AuthErrCode, Msg: ErrCodeMsg[AuthErrCode], Data: nil}
-	PermErrT       = &T{Code: PermErrCode, Msg: ErrCodeMsg[PermErrCode], Data: nil}
-	ExistErrT      = &T{Code: ExistErrCode, Msg: ErrCodeMsg[ExistErrCode], Data: nil}
-	NotFoundErrT   = &T{Code: NotFoundErrCode, Msg: ErrCodeMsg[NotFoundErrCode], Data: nil}
-	LimitErrT      = &T{Code: LimitErrCode, Msg: ErrCodeMsg[LimitErrCode], Data: nil}
-	TimeoutErrT    = &T{Code: TimeoutErrCode, Msg: ErrCodeMsg[TimeoutErrCode], Data: nil}
-	OtherErrT      = &T{Code: OtherErrCode, Msg: ErrCodeMsg[OtherErrCode], Data: nil}
-	MethodErrT     = &T{Code: MethodErrCode, Msg: ErrCodeMsg[MethodErrCode], Data: nil}
-	TooManyReqErrT = &T{Code: TooManyReqErrCode, Msg: ErrCodeMsg[TooManyReqErrCode], Data: nil}
-	FileFormatErrT = &T{Code: FileFormatErrCode, Msg: ErrCodeMsg[FileFormatErrCode], Data: nil}
-	EqualErrT      = &T{Code: EqualErrCode, Msg: ErrCodeMsg[EqualErrCode], Data: nil}
+	SuccT          = &T{Code: SuccErrCode, Msg: ErrCodeMsg[SuccErrCode], Data: nil}             // 操作成功
+	FailT          = &T{Code: FailErrCode, Msg: ErrCodeMsg[FailErrCode], Data: nil}             // 操作失败
+	InternalErrT   = &T{Code: InternalErrCode, Msg: ErrCodeMsg[InternalErrCode], Data: nil}     // 内部错误
+	ParamErrT      = &T{Code: ParamErrCode, Msg: ErrCodeMsg[ParamErrCode], Data: nil}           // 参数错误
+	AuthErrT       = &T{Code: AuthErrCode, Msg: ErrCodeMsg[AuthErrCode], Data: nil}             // 认证失败
+	PermErrT       = &T{Code: PermErrCode, Msg: ErrCodeMsg[PermErrCode], Data: nil}             // 无权限
+	ExistErrT      = &T{Code: ExistErrCode, Msg: ErrCodeMsg[ExistErrCode], Data: nil}           // 数据已存在
+	NotFoundErrT   = &T{Code: NotFoundErrCode, Msg: ErrCodeMsg[NotFoundErrCode], Data: nil}     // 数据未找到
+	LimitErrT      = &T{Code: LimitErrCode, Msg: ErrCodeMsg[LimitErrCode], Data: nil}           // 已限制操作
+	TimeoutErrT    = &T{Code: TimeoutErrCode, Msg: ErrCodeMsg[TimeoutErrCode], Data: nil}       // 超时错误
+	OtherErrT      = &T{Code: OtherErrCode, Msg: ErrCodeMsg[OtherErrCode], Data: nil}           // 未知错误
+	MethodErrT     = &T{Code: MethodErrCode, Msg: ErrCodeMsg[MethodErrCode], Data: nil}         // 方法错误
+	TooManyReqErrT = &T{Code: TooManyReqErrCode, Msg: ErrCodeMsg[TooManyReqErrCode], Data: nil} // 请求频繁
+	FileFormatErrT = &T{Code: FileFormatErrCode, Msg: ErrCodeMsg[FileFormatErrCode], Data: nil} // 文件格式错误
+	EqualErrT      = &T{Code: EqualErrCode, Msg: ErrCodeMsg[EqualErrCode], Data: nil}           // 与原数据一致
 )
 
 const (
