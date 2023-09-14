@@ -300,3 +300,55 @@ func TestHasChinese(t *testing.T) {
 		})
 	}
 }
+
+func TestStringValueIsEqual(t *testing.T) {
+	type args struct {
+		a string
+		b string
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{
+			name: "test1",
+			args: args{
+				a: "1.1",
+				b: "1.1",
+			},
+			want: true,
+		},
+		{
+			name: "test2",
+			args: args{
+				a: "1.1",
+				b: "1.2",
+			},
+			want: false,
+		},
+		{
+			name: "test3",
+			args: args{
+				a: "1.1",
+				b: "1.10000000000",
+			},
+			want: true,
+		},
+		{
+			name: "test4",
+			args: args{
+				a: "1.1",
+				b: "1.1.1",
+			},
+			want: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := StringValueIsEqual(tt.args.a, tt.args.b); got != tt.want {
+				t.Errorf("StringValueIsEqual() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

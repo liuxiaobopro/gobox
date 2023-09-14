@@ -215,7 +215,7 @@ func UniqueFileName(f *multipart.FileHeader) string {
 	return fileName
 }
 
-// 判断字符串是否存在中文
+// HasChinese 判断字符串是否存在中文
 func HasChinese(s string) bool {
 	for _, v := range s {
 		if v > 0x4e00 && v < 0x9fff {
@@ -223,4 +223,20 @@ func HasChinese(s string) bool {
 		}
 	}
 	return false
+}
+
+// StringValueIsEqual 比较两个字符串是否相等(string 转 float64 作比较)
+func StringValueIsEqual(a, b string) bool {
+	// 将字符串转换为 float64
+	num1, err1 := strconv.ParseFloat(a, 64)
+	num2, err2 := strconv.ParseFloat(b, 64)
+
+	if err1 != nil || err2 != nil {
+		// 解析失败，不相等
+		return false
+	}
+
+	// 使用容差值比较两个浮点数
+	const tolerance = 1e-9
+	return (num1-num2) < tolerance && (num2-num1) < tolerance
 }
