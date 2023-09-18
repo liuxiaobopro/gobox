@@ -7,6 +7,6 @@ import (
 
 // RandomInt 获取随机数(左开右闭)
 func RandomInt(min, max int) int {
-	rand.Seed(time.Now().UnixNano())
-	return min + rand.Intn(max-min)
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	return min + r.Intn(max-min)
 }
