@@ -50,10 +50,16 @@ func NowTimeStr() string {
 	return time.Now().Format(FormatDateTime)
 }
 
-// NowTimeStamp
+// NowTimeStamp 获取当前时间戳
 // 例如: 1560000000
 func NowTimeStamp() int {
 	return int(time.Now().Unix())
+}
+
+// NowMilliTimeStamp 获取当前时间戳(毫秒)
+// 例如: 1560000000000
+func NowMilliTimeStamp() int64 {
+	return time.Now().UnixNano() / 1e6
 }
 
 // CheckSETime 检查开始时间和结束时间
