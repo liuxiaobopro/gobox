@@ -1,5 +1,12 @@
 package getui
 
+import (
+	"encoding/json"
+
+	httpx "github.com/liuxiaobopro/gobox/http"
+	logx "github.com/liuxiaobopro/gobox/log"
+)
+
 /*
 部分代码参考: https://github.com/dacker-soul/getui
 */
@@ -12,6 +19,9 @@ const (
 
 	// 【toSingle】执行cid单推
 	PushSingleByCidUrl = "/push/single/cid"
+
+	// 【toApp】执行群推
+	PushAppUrl = "/push/all"
 )
 
 type ConfigDemo struct {
@@ -31,6 +41,26 @@ type Config struct {
 
 	ExpireTime string
 	Token      string
+}
+
+func (th *Config) doPost(api string, param interface{}) ([]byte, error) {
+	jsonByte, err := json.Marshal(param)
+	if err != nil {
+		logx.Errorf("json.Marshal err: %v", err)
+		return nil, err
+	}
+
+	client := &httpx.Client{
+		Url: th.BaseUrl + api,
+		Header: map[string]string{
+			"Content-Type": "application/json",
+			"Charset":      "UTF-8",
+			"token":        th.Token,
+		},
+		Json: jsonByte,
+	}
+
+	return client.Post()
 }
 
 type ConfigOption func(c *Config)
