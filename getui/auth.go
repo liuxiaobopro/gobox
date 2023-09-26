@@ -3,13 +3,26 @@ package getui
 import (
 	"crypto/sha256"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"strconv"
+	"time"
 
 	httpx "github.com/liuxiaobopro/gobox/http"
 	logx "github.com/liuxiaobopro/gobox/log"
 	timex "github.com/liuxiaobopro/gobox/time"
 )
+
+type AuthReply struct {
+	Msg  string     `json:"msg"`
+	Code int        `json:"code"`
+	Data *authReply `json:"data"`
+}
+
+type authReply struct {
+	ExpireTime string `json:"expire_time"`
+	Token      string `json:"token"`
+}
 
 type AuthT struct {
 	Sign      string `json:"sign"`
@@ -44,7 +57,7 @@ func (th *Config) Auth() error {
 	}
 
 	hc := &httpx.Client{
-		Url: fmt.Sprintf(AuthUrl, th.AppId),
+		Url: fmt.Sprintf(BaseUrlV2+AuthUrl, th.AppId),
 		Header: map[string]string{
 			"Content-Type": "application/json",
 			"Charset":      "UTF-8",
@@ -66,8 +79,24 @@ func (th *Config) Auth() error {
 		return fmt.Errorf("鉴权失败: %s", r.Msg)
 	}
 
+	th.BaseUrl = fmt.Sprintf(BaseUrlV2, th.AppId)
 	th.ExpireTime = r.Data.ExpireTime
 	th.Token = r.Data.Token
+
+	return nil
+}
+
+func (th *Config) CheckToken() error {
+	if th.Token == "" || th.ExpireTime == "" {
+		return errors.New("请先鉴权")
+	}
+
+	t, _ := strconv.ParseInt(th.ExpireTime, 10, 64)
+
+	expireTime := time.Unix(t, 0)
+	if expireTime.Before(time.Now()) {
+		return th.Auth()
+	}
 
 	return nil
 }

@@ -1,17 +1,33 @@
 package getui
 
+/*
+部分代码参考: https://github.com/dacker-soul/getui
+*/
+
 const (
-	BaseUrlV2 = "https://restapi.getui.com/v2"
+	BaseUrlV2 = "https://restapi.getui.com/v2/%s"
 
 	// 鉴权api
-	AuthUrl = BaseUrlV2 + "/%s/auth"
+	AuthUrl = "/auth"
+
+	// 【toSingle】执行cid单推
+	PushSingleByCidUrl = "/push/single/cid"
 )
+
+type ConfigDemo struct {
+	AppId        string
+	AppKey       string
+	MasterSecret string
+	IosCid       string
+	AndroidCid   string
+}
 
 type Config struct {
 	AppId        string
 	AppKey       string
 	AppSecret    string
 	MasterSecret string
+	BaseUrl      string
 
 	ExpireTime string
 	Token      string
@@ -48,5 +64,6 @@ func New(opts ...ConfigOption) *Config {
 	for _, opt := range opts {
 		opt(c)
 	}
+
 	return c
 }
