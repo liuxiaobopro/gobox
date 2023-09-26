@@ -10,6 +10,7 @@ import (
 	"github.com/spf13/viper"
 )
 
+// 测试-单次推送ByCid 厂商通道+纯透模板
 func TestConfig_ToSingleByCid1(t *testing.T) {
 	//#region 获取配置
 	v := viper.New()
@@ -116,6 +117,7 @@ func TestConfig_ToSingleByCid1(t *testing.T) {
 	//#endregion
 }
 
+// 测试-单次推送ByCid 厂商通道普通模板+个推通道普通模板
 func TestConfig_ToSingleByCid2(t *testing.T) {
 	//#region 获取配置
 	v := viper.New()
