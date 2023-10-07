@@ -98,6 +98,7 @@ func (th *Config) CheckToken() error {
 	logx.Debugf("当前时间: %s, 过期时间: %s", time.Now().Format(timex.FormatDateTime), expireTime.Format(timex.FormatDateTime))
 
 	if expireTime.Before(time.Now()) {
+		logx.Debugf("鉴权过期, 重新鉴权")
 		return th.Auth()
 	}
 
