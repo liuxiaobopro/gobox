@@ -93,7 +93,7 @@ func (th *Config) CheckToken() error {
 
 	t, _ := strconv.ParseInt(th.ExpireTime, 10, 64)
 
-	expireTime := time.Unix(t, 0)
+	expireTime := time.Unix(t/1000, 0)
 
 	logx.Debugf("当前时间: %s, 过期时间: %s", time.Now().Format(timex.FormatDateTime), expireTime.Format(timex.FormatDateTime))
 
