@@ -43,6 +43,7 @@ func (th *Config) ToSingleByCid(param *PushSingleParam) ([]byte, error) {
 
 }
 
+// ToApp【toApp】执行群推
 func (th *Config) ToApp(param *PushAppParam) ([]byte, error) {
 	if err := th.CheckToken(); err != nil {
 		return nil, err
