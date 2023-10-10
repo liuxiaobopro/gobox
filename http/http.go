@@ -126,7 +126,7 @@ func IsValidUrl(str string) bool {
 		url := parsedURL.Scheme + "://" + parsedURL.Host
 
 		headers := make(http.Header)
-		headers.Set("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)")
+		headers.Set("User-Agent", GetRandomUserAgent())
 
 		// 创建一个自定义的http.Client
 		client := &http.Client{
