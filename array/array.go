@@ -1,6 +1,8 @@
 package array
 
 import (
+	"reflect"
+
 	typesx "github.com/liuxiaobopro/gobox/types"
 )
 
@@ -63,14 +65,23 @@ func Difference[T typesx.All1](a, b []T) []T {
 }
 
 // IsIn 判断元素是否在数组中
-func IsIn[T typesx.All1](a []T, b T) bool {
+func IsIn[T interface{}](a []T, b T) bool {
 	for _, v := range a {
-		if v == b {
+		if reflect.DeepEqual(v, b) {
 			return true
 		}
 	}
 	return false
 }
+
+//	func IsIn[T typesx.All1](a []T, b T) bool {
+//		for _, v := range a {
+//			if v == b {
+//				return true
+//			}
+//		}
+//		return false
+//	}
 
 // Delete 删除数组中的元素
 func Delete[T typesx.All1](a []T, b ...T) []T {
