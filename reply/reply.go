@@ -24,6 +24,7 @@ var (
 	TooManyReqErrT = &T{Code: TooManyReqErrCode, Msg: ErrCodeMsg[TooManyReqErrCode], Data: nil} // 请求频繁
 	FileFormatErrT = &T{Code: FileFormatErrCode, Msg: ErrCodeMsg[FileFormatErrCode], Data: nil} // 文件格式错误
 	EqualErrT      = &T{Code: EqualErrCode, Msg: ErrCodeMsg[EqualErrCode], Data: nil}           // 与原数据一致
+	VersionErrT    = &T{Code: VersionErrCode, Msg: ErrCodeMsg[VersionErrCode], Data: nil}       // 版本错误
 )
 
 const (
@@ -43,6 +44,7 @@ const (
 	TooManyReqErrCode // 12
 	FileFormatErrCode // 13
 	EqualErrCode      // 14
+	VersionErrCode    // 15
 )
 
 var ErrCodeMsg = map[RespCode]string{
@@ -61,6 +63,7 @@ var ErrCodeMsg = map[RespCode]string{
 	TooManyReqErrCode: "请求频繁",
 	FileFormatErrCode: "文件格式错误",
 	EqualErrCode:      "与原数据一致",
+	VersionErrCode:    "版本错误",
 }
 
 func (r T) IsSucc() bool {
