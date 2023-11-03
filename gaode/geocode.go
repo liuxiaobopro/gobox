@@ -18,6 +18,7 @@ func WithAddress(address string) func(*Geocode) {
 	}
 }
 
+// Deprecated: 已不再维护, 请使用同级geocode目录下对应的方法
 func NewGeocode(key string, options ...func(*Geocode)) *Geocode {
 	g := &Geocode{
 		Gaode: Gaode{
