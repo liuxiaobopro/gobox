@@ -8,7 +8,7 @@ import (
 func TestNewGeocodeRegeo(t *testing.T) {
 	key := "xxx"
 
-	geo := NewGeocodeRegeo(key, WithGeocodeRegeoLocation("118.816773,35.415796"))
+	geo := NewGeocodeRegeo(key, WithGeocodeRegeoLocation("118.2012,39.6463666666667"))
 
 	b, err := geo.Query()
 
@@ -27,4 +27,6 @@ func TestNewGeocodeRegeo(t *testing.T) {
 	}
 
 	t.Logf("%s", res.Regeocode.AddressComponent.Province)
+	t.Logf("%s", res.Regeocode.AddressComponent.City)
+	t.Logf("%s", res.Regeocode.AddressComponent.District)
 }

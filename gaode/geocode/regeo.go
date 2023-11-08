@@ -8,7 +8,9 @@ import (
 )
 
 type AddressComponent struct {
+	City     string `json:"city,omitempty"`
 	Province string `json:"province,omitempty"`
+	District string `json:"district,omitempty"`
 }
 
 type Regeocode struct {
