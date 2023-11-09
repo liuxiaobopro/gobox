@@ -161,6 +161,10 @@ func (f *File) UploadFile(file multipart.File, fileHeader *multipart.FileHeader)
 	return f.upload(filePath, fileName)
 }
 
+func (f *File) UploadLocalFile(filePath, fileName string) (string, error) {
+	return f.upload(filePath, fileName)
+}
+
 // UploadFile 上传文件(本地文件)
 func (f *File) upload(filePath, fileName string) (string, error) {
 	putPolicy := storage.PutPolicy{
