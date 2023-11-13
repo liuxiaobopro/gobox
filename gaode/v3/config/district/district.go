@@ -65,5 +65,6 @@ func (d *District) Query() ([]byte, error) {
 }
 
 func (d *District) url() string {
-	return fmt.Sprintf("https://restapi.amap.com/v3/config/district?key=%s&keywords=%s&subdistrict=%s&extensions=%s", d.Key, d.Keywords, d.Subdistrict, d.Extensions)
+	baseUrl := "https://restapi.amap.com/v3/config/district"
+	return fmt.Sprintf("%s?key=%s&keywords=%s&subdistrict=%s&extensions=%s", baseUrl, d.Key, d.Keywords, d.Subdistrict, d.Extensions)
 }
