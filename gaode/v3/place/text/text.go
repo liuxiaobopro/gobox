@@ -67,7 +67,7 @@ func WithExtensions(extensions string) func(*District) {
 	}
 }
 
-func NewDistrict(key string, options ...func(*District)) *District {
+func NewText(key string, options ...func(*District)) *District {
 	d := &District{
 		Gaode: gaodex.Gaode{
 			Key: key,

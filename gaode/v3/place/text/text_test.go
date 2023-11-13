@@ -5,7 +5,7 @@ import (
 )
 
 func TestNewDistrict(t *testing.T) {
-	r := NewDistrict("xxx",
+	r := NewText("xxx",
 		WithKeywords("铁西"),
 		WithCity("沈阳"),
 		WithCitylimit("true"),
