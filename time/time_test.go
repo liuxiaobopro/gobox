@@ -1,6 +1,7 @@
 package time
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -142,4 +143,11 @@ func TestCheckSETime(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestStringToTime(t *testing.T) {
+	timeStr := "1993-12-27 15:18:34"
+
+	tt := StringToTime(timeStr)
+	fmt.Printf("%s\n", tt.Format(FormatDateTime))
 }

@@ -44,6 +44,20 @@ func StringToInt(t string) int {
 	return int(tt.Unix())
 }
 
+// StringToTime 将时间字符串转换为time
+// 例如: 2019-06-09 00:00:00 -> time
+func StringToTime(t string) Time {
+	loc, err := time.LoadLocation("Local") // 获取时区(中国上海; TimeZoneSH)
+	if err != nil {
+		panic(err)
+	}
+	tt, err := time.ParseInLocation(FormatDateTime, t, loc)
+	if err != nil {
+		panic(err)
+	}
+	return Time(tt)
+}
+
 // NowTimeStr 获取当前时间字符串
 // 例如: 2019-06-09 00:00:00
 func NowTimeStr() string {
