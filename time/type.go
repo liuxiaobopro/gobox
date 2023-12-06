@@ -32,6 +32,11 @@ func (t Time) Format(layout string) string {
 	return time.Time(t).Format(layout)
 }
 
+// Raw 返回原始time.Time
+func (t Time) Raw() time.Time {
+	return time.Time(t)
+}
+
 func Now() Time {
 	return Time(time.Now())
 }
