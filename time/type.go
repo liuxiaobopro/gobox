@@ -37,6 +37,16 @@ func (t Time) Raw() time.Time {
 	return time.Time(t)
 }
 
+// IsToday 判断是否今天
+func (t Time) IsToday() bool {
+	return t.Format(FormatDate) == time.Now().Format(FormatDate)
+}
+
+// IsYesterday 判断是否昨天
+func (t Time) IsYesterday() bool {
+	return t.Format(FormatDate) == time.Now().AddDate(0, 0, -1).Format(FormatDate)
+}
+
 func Now() Time {
 	return Time(time.Now())
 }
