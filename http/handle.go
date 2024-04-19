@@ -92,6 +92,12 @@ func (*GinHandle) RetuenOk(c *gin.Context, data interface{}) {
 	c.JSON(http.StatusOK, replyx.Succ(data))
 }
 
+// ReturnOk 返回成功json
+// 例如：ReturnOk(c, data) => ReturnJSON(c, http.StatusOK, respx.Succ(data))
+func (*GinHandle) ReturnOk(c *gin.Context, data interface{}) {
+	c.JSON(http.StatusOK, replyx.Succ(data))
+}
+
 // ReturnErr 返回错误json
 // 例如：ReturnErr(c, respx.ParamErrT.ToPt()) => ReturnJSON(c, http.StatusBadRequest, respx.ParamErrT.ToPt())
 func (*GinHandle) ReturnErr(c *gin.Context, r *replyx.T) {
@@ -107,5 +113,11 @@ func (*GinHandle) ReturnStatusOKErr(c *gin.Context, r *replyx.T) {
 // RetuenHTML 返回html
 // 例如：RetuenHTML(c, "index.html", data)
 func (*GinHandle) RetuenHTML(c *gin.Context, name string, data interface{}) {
+	c.HTML(http.StatusOK, name, data)
+}
+
+// ReturnHTML 返回html
+// 例如：ReturnHTML(c, "index.html", data)
+func (*GinHandle) ReturnHTML(c *gin.Context, name string, data interface{}) {
 	c.HTML(http.StatusOK, name, data)
 }
