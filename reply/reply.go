@@ -86,6 +86,10 @@ func (r T) Error() string {
 	return r.Msg
 }
 
+func (r T) Value() T {
+	return r
+}
+
 func Succ(data interface{}) *T {
 	return &T{
 		Code: SuccErrCode,
