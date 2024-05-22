@@ -55,3 +55,10 @@ func TestDeleteByIndex(t *testing.T) {
 	got := DeleteByIndex(arr1, 1)
 	t.Logf("got: %v, want: %v", got, want)
 }
+
+func TestUnique(t *testing.T) {
+	arr1 := []string{"1", "1", "3", "4"}
+	want := []string{"1", "3", "4"}
+	got := Unique(arr1)
+	t.Logf("got: %v, want: %v", got, want)
+}
