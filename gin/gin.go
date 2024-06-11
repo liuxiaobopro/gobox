@@ -3,7 +3,9 @@ package gin
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	definex "github.com/liuxiaobopro/gobox/define"
@@ -36,4 +38,12 @@ func GetParam(c *gin.Context) string {
 
 	b, _ := json.Marshal(rMap)
 	return string(b)
+}
+
+func Context() *gin.Context {
+	c := &gin.Context{}
+
+	c.Set(definex.TraceId, fmt.Sprintf("%d", time.Now().UnixNano()))
+
+	return c
 }
