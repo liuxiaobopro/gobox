@@ -29,10 +29,11 @@ const (
 )
 
 type Gin struct {
-	Mode         Mode
-	Level        Level
-	Sign         string
-	IsCloseColor bool
+	Mode              Mode
+	Level             Level
+	Sign              string
+	IsCloseColor      bool
+	FilePathCutLength int // 截掉文件路径头部长度
 }
 
 type GinOption func(c *Gin)
@@ -58,6 +59,12 @@ func WithSign(sign string) GinOption {
 func WithIsCloseColor(closeColor bool) GinOption {
 	return func(c *Gin) {
 		c.IsCloseColor = closeColor
+	}
+}
+
+func WithFilePathCutLength(length int) GinOption {
+	return func(c *Gin) {
+		c.FilePathCutLength = length
 	}
 }
 
@@ -118,6 +125,7 @@ func (conf *Gin) logf(level Level, c *gin.Context, format string, a ...interface
 	fmt.Fprintf(&buf, "[%s] | %s | %s ", conf.Sign, level, time.Now().Format("2006-01-02 15:04:05"))
 
 	_, file, line, ok := runtime.Caller(2)
+	file = file[conf.FilePathCutLength:]
 	if ok {
 		fmt.Fprintf(&buf, "| %s:%d ", file, line)
 	}
