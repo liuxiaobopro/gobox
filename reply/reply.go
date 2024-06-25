@@ -90,6 +90,34 @@ func (r T) Value() T {
 	return r
 }
 
+type TOption func(*T)
+
+func WithCode(code int) TOption {
+	return func(t *T) {
+		t.Code = RespCode(code)
+	}
+}
+
+func WithData(data interface{}) TOption {
+	return func(t *T) {
+		t.Data = data
+	}
+}
+
+func New(msg string, options ...TOption) *T {
+	t := &T{
+		Code: FailErrCode,
+		Msg:  msg,
+		Data: nil,
+	}
+
+	for _, option := range options {
+		option(t)
+	}
+
+	return t
+}
+
 func Succ(data interface{}) *T {
 	return &T{
 		Code: SuccErrCode,
