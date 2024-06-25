@@ -2,6 +2,10 @@ package reply
 
 type RespCode int
 
+func (r RespCode) Int() int {
+	return int(r)
+}
+
 type T struct {
 	Code RespCode    `json:"code"`
 	Msg  string      `json:"msg"`
