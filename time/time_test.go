@@ -1,6 +1,7 @@
 package time
 
 import (
+	"encoding/json"
 	"fmt"
 	"testing"
 )
@@ -150,4 +151,18 @@ func TestStringToTime(t *testing.T) {
 
 	tt := StringToTime(timeStr)
 	fmt.Printf("%s\n", tt.Format(FormatDateTime))
+}
+
+func TestZeroTime(t *testing.T) {
+	type user struct {
+		Name     string
+		CreateAt Time
+	}
+
+	u := user{
+		Name: "test",
+	}
+
+	jsonBytes, _ := json.Marshal(u)
+	fmt.Println(string(jsonBytes))
 }
