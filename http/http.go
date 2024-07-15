@@ -87,6 +87,42 @@ func (Client *Client) Post() ([]byte, error) {
 	return io.ReadAll(resp.Body)
 }
 
+// Put put请求返回[]byte
+func (Client *Client) Put() ([]byte, error) {
+	var (
+		resp *http.Response
+		err  error
+
+		jsonData io.Reader
+	)
+
+	if Client.Json != nil {
+		jsonData = bytes.NewBuffer(Client.Json)
+	}
+
+	req, err := http.NewRequest(http.MethodPut, Client.Url, jsonData)
+	if err != nil {
+		return nil, err
+	}
+	if Client.Header != nil {
+		for k, v := range Client.Header {
+			req.Header.Set(k, v)
+		}
+	}
+	if Client.Form != nil {
+		req.PostForm = mapx.MapToForm(Client.Form)
+	}
+	if Client.UserAgent != "" {
+		req.Header.Set("User-Agent", Client.UserAgent)
+	}
+	resp, err = http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	return io.ReadAll(resp.Body)
+}
+
 // GetRandomUserAgent 获取随机User-Agent
 func GetRandomUserAgent() string {
 	userAgents := []string{
