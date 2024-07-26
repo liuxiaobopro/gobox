@@ -9,6 +9,11 @@ const (
 	FormatDate     = "2006-01-02"
 	FormatTime     = "15:04:05"
 
+	LayoutDateTime    = "2006-01-02 15:04:05"
+	LayoutDate        = "2006-01-02"
+	LayoutTime        = "15:04:05"
+	LayoutDateTimeNum = "20060102150405"
+
 	TimeZoneSH = "Asia/Shanghai"
 )
 
