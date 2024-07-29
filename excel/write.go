@@ -14,6 +14,12 @@ func WithHead(head []string) WriteOption {
 	}
 }
 
+func WithHeadWidth(hw []int) WriteOption {
+	return func(w *Write) {
+		w.HeadWidth = hw
+	}
+}
+
 func WithData(data [][]string) WriteOption {
 	return func(w *Write) {
 		w.Data = data
@@ -59,6 +65,10 @@ func (w *Write) Write() (string, error) {
 		col := 'A' + i
 		// accii to string
 		_ = f.SetCellValue(w.Sheet, fmt.Sprintf("%c1", col), v)
+		// 设置宽度
+		if len(w.HeadWidth) > 0 {
+			_ = f.SetColWidth(w.Sheet, fmt.Sprintf("%c", col), fmt.Sprintf("%c", col), float64(w.HeadWidth[i]))
+		}
 	}
 
 	// 设置数据

@@ -7,6 +7,7 @@ func TestWrite_Write(t *testing.T) {
 		WithFilepath("test.xlsx"),
 		WithWriteSheet("Sheet1"),
 		WithHead([]string{"姓名", "年龄", "性别"}),
+		WithHeadWidth([]int{10, 20, 30}),
 		WithData([][]string{
 			{"张三", "18", "男"},
 			{"李四", "19", "女"},

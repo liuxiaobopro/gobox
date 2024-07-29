@@ -23,8 +23,9 @@ type Read struct {
 }
 
 type Write struct {
-	Filepath string     // 文件路径
-	Sheet    string     // 工作表名称
-	Head     []string   // 表头
-	Data     [][]string // 数据
+	Filepath  string     // 文件路径
+	Sheet     string     // 工作表名称
+	Head      []string   // 表头
+	HeadWidth []int      // 表头宽度
+	Data      [][]string // 数据
 }
