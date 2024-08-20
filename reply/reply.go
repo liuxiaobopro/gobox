@@ -122,6 +122,14 @@ func New(msg string, options ...TOption) *T {
 	return t
 }
 
+func NewParam(msg string) *T {
+	return &T{
+		Code: ParamErrCode,
+		Msg:  msg,
+		Data: nil,
+	}
+}
+
 func Succ(data interface{}) *T {
 	return &T{
 		Code: SuccErrCode,
