@@ -124,7 +124,7 @@ func CamelCase(s string) string {
 	camelCase := ""
 	for i, word := range words {
 		if i == 0 {
-			camelCase += strings.ToLower(word)
+			camelCase += strings.ToUpper(word)
 		} else {
 			c := cases.Title(language.Und, cases.NoLower).String(word)
 			camelCase += c
@@ -136,16 +136,16 @@ func CamelCase(s string) string {
 // LowerCamelCase 转小驼峰
 func LowerCamelCase(s string) string {
 	words := regexp.MustCompile(`[-_\s]+`).Split(s, -1)
-	camelCase := ""
+	lowerCamelCase := ""
 	for i, word := range words {
 		if i == 0 {
-			camelCase += strings.ToLower(word)
+			lowerCamelCase += strings.ToLower(word)
 		} else {
 			c := cases.Title(language.Und, cases.NoLower).String(word)
-			camelCase += FirstLow(c)
+			lowerCamelCase += c
 		}
 	}
-	return camelCase
+	return lowerCamelCase
 }
 
 // ReplaceCharAfterSpecifiedCharLow 替换指定字符后面的字符为小驼峰
