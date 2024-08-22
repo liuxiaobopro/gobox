@@ -120,17 +120,9 @@ func ReplaceCharAfterSpecifiedCharUp(s, c string) (out string) {
 
 // CamelCase 转大驼峰
 func CamelCase(s string) string {
-	words := regexp.MustCompile(`[-_\s]+`).Split(s, -1)
-	camelCase := ""
-	for i, word := range words {
-		if i == 0 {
-			camelCase += strings.ToUpper(word)
-		} else {
-			c := cases.Title(language.Und, cases.NoLower).String(word)
-			camelCase += c
-		}
-	}
-	return camelCase
+	str := LowerCamelCase(s)
+
+	return FirstUp(str)
 }
 
 // LowerCamelCase 转小驼峰
