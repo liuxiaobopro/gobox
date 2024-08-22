@@ -5,12 +5,15 @@ import (
 	"math/rand"
 	"mime/multipart"
 	"path"
+	"regexp"
 	"strconv"
 	"strings"
 	"sync"
 	"time"
 
 	"github.com/liuxiaobopro/gobox/crypto"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 // Has 判断字符串是否存在某个字符
@@ -113,6 +116,36 @@ func ReplaceCharAfterSpecifiedCharUp(s, c string) (out string) {
 		out += FirstUp(v + v2)
 	}
 	return
+}
+
+// CamelCase 转大驼峰
+func CamelCase(s string) string {
+	words := regexp.MustCompile(`[-_\s]+`).Split(s, -1)
+	camelCase := ""
+	for i, word := range words {
+		if i == 0 {
+			camelCase += strings.ToLower(word)
+		} else {
+			c := cases.Title(language.Und, cases.NoLower).String(word)
+			camelCase += c
+		}
+	}
+	return camelCase
+}
+
+// LowerCamelCase 转小驼峰
+func LowerCamelCase(s string) string {
+	words := regexp.MustCompile(`[-_\s]+`).Split(s, -1)
+	camelCase := ""
+	for i, word := range words {
+		if i == 0 {
+			camelCase += strings.ToLower(word)
+		} else {
+			c := cases.Title(language.Und, cases.NoLower).String(word)
+			camelCase += FirstLow(c)
+		}
+	}
+	return camelCase
 }
 
 // ReplaceCharAfterSpecifiedCharLow 替换指定字符后面的字符为小驼峰
