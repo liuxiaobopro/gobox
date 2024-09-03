@@ -79,6 +79,11 @@ func (w *Write) Write() (string, error) {
 		}
 	}
 
+	if w.Sheet != "Sheet1" {
+		// 删除默认工作表
+		_ = f.DeleteSheet("Sheet1")
+	}
+
 	// 保存文件
 	if err := f.SaveAs(w.Filepath); err != nil {
 		return "", err
