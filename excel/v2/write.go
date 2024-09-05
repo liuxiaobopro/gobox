@@ -2,6 +2,7 @@ package excel
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/xuri/excelize/v2"
 )
@@ -89,12 +90,25 @@ func (w *Write) AddSheet(s *Sheet) *Write {
 
 	// 设置表头
 	for i, v := range s.Head {
-		col := 'A' + i
+		var cell string
+
+		if i < 26 {
+			cell = fmt.Sprintf("%c1", 'A'+i)
+		} else if i < 52 {
+			cell = fmt.Sprintf("A%c1", 'A'+i-26)
+		} else if i < 78 {
+			cell = fmt.Sprintf("B%c1", 'A'+i-52)
+		} else {
+			w.err = fmt.Errorf("太多列啦")
+			return w
+		}
+
 		// accii to string
-		_ = w.f.SetCellValue(s.Name, fmt.Sprintf("%c1", col), v)
+		_ = w.f.SetCellValue(s.Name, cell, v)
 		// 设置宽度
 		if len(s.HeadWidth) > 0 {
-			if err := w.f.SetColWidth(s.Name, fmt.Sprintf("%c", col), fmt.Sprintf("%c", col), float64(s.HeadWidth[i])); err != nil {
+			col := strings.TrimRight(cell, "1")
+			if err := w.f.SetColWidth(s.Name, col, col, float64(s.HeadWidth[i])); err != nil {
 				w.err = err
 				return w
 			}
