@@ -10,7 +10,7 @@ type Write struct {
 	Filepath string // 文件路径
 
 	f           *excelize.File // 文件
-	sheets      []*sheet       // 工作表
+	sheets      []*Sheet       // 工作表
 	isDelSheet1 bool           // 是否删除默认工作表
 
 	err error
@@ -38,23 +38,23 @@ func (w *Write) DelSheet1() *Write {
 	return w
 }
 
-type sheet struct {
+type Sheet struct {
 	name      string     // 工作表名称
 	head      []string   // 表头
 	headWidth []int      // 表头宽度
 	data      [][]string // 数据
 }
 
-type sheetOption func(*sheet)
+type sheetOption func(*Sheet)
 
-func WithSheetHeadWidth(hw []int) func(*sheet) {
-	return func(s *sheet) {
+func WithSheetHeadWidth(hw []int) func(*Sheet) {
+	return func(s *Sheet) {
 		s.headWidth = hw
 	}
 }
 
-func (w *Write) NewSheet(name string, head []string, data [][]string, opts ...sheetOption) *sheet {
-	s := &sheet{
+func (w *Write) NewSheet(name string, head []string, data [][]string, opts ...sheetOption) *Sheet {
+	s := &Sheet{
 		name: name,
 		head: head,
 		data: data,
@@ -69,7 +69,7 @@ func (w *Write) NewSheet(name string, head []string, data [][]string, opts ...sh
 	return s
 }
 
-func (w *Write) addSheet(s *sheet) *Write {
+func (w *Write) addSheet(s *Sheet) *Write {
 	w.sheets = append(w.sheets, s)
 
 	// 创建工作表
