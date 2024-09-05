@@ -39,54 +39,62 @@ func (w *Write) DelSheet1() *Write {
 }
 
 type Sheet struct {
-	name      string     // 工作表名称
-	head      []string   // 表头
-	headWidth []int      // 表头宽度
-	data      [][]string // 数据
+	Name      string     // 工作表名称
+	Head      []string   // 表头
+	HeadWidth []int      // 表头宽度
+	Data      [][]string // 数据
 }
 
 type sheetOption func(*Sheet)
 
-func WithSheetHeadWidth(hw []int) func(*Sheet) {
+func WithSheetHead(head []string) sheetOption {
 	return func(s *Sheet) {
-		s.headWidth = hw
+		s.Head = head
 	}
 }
 
-func (w *Write) NewSheet(name string, head []string, data [][]string, opts ...sheetOption) *Sheet {
+func WithSheetHeadWidth(hw []int) sheetOption {
+	return func(s *Sheet) {
+		s.HeadWidth = hw
+	}
+}
+
+func WithSheetData(data [][]string) sheetOption {
+	return func(s *Sheet) {
+		s.Data = data
+	}
+}
+
+func NewSheet(name string, opts ...sheetOption) *Sheet {
 	s := &Sheet{
-		name: name,
-		head: head,
-		data: data,
+		Name: name,
 	}
 
 	for _, opt := range opts {
 		opt(s)
 	}
 
-	w.addSheet(s)
-
 	return s
 }
 
-func (w *Write) addSheet(s *Sheet) *Write {
+func (w *Write) AddSheet(s *Sheet) *Write {
 	w.sheets = append(w.sheets, s)
 
 	// 创建工作表
-	if _, err := w.f.NewSheet(s.name); err != nil {
+	if _, err := w.f.NewSheet(s.Name); err != nil {
 		w.err = err
 
 		return w
 	}
 
 	// 设置表头
-	for i, v := range s.head {
+	for i, v := range s.Head {
 		col := 'A' + i
 		// accii to string
-		_ = w.f.SetCellValue(s.name, fmt.Sprintf("%c1", col), v)
+		_ = w.f.SetCellValue(s.Name, fmt.Sprintf("%c1", col), v)
 		// 设置宽度
-		if len(s.headWidth) > 0 {
-			if err := w.f.SetColWidth(s.name, fmt.Sprintf("%c", col), fmt.Sprintf("%c", col), float64(s.headWidth[i])); err != nil {
+		if len(s.HeadWidth) > 0 {
+			if err := w.f.SetColWidth(s.Name, fmt.Sprintf("%c", col), fmt.Sprintf("%c", col), float64(s.HeadWidth[i])); err != nil {
 				w.err = err
 				return w
 			}
@@ -94,10 +102,10 @@ func (w *Write) addSheet(s *Sheet) *Write {
 	}
 
 	// 设置数据
-	for i, v := range s.data {
+	for i, v := range s.Data {
 		for j, k := range v {
 			col := 'A' + j
-			if err := w.f.SetCellValue(s.name, fmt.Sprintf("%c%d", col, i+2), k); err != nil {
+			if err := w.f.SetCellValue(s.Name, fmt.Sprintf("%c%d", col, i+2), k); err != nil {
 				w.err = err
 				return w
 			}

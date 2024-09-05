@@ -7,9 +7,14 @@ import (
 func TestNewWrite(t *testing.T) {
 	excel := NewExcel("./test.xlsx")
 	excel.DelSheet1()
-	excel.NewSheet("sheet1", []string{"a", "b"}, [][]string{{"1", "2"}})
-	excel.NewSheet("sheet21", []string{"c", "d"}, [][]string{{"3", "4"}})
-	excel.NewSheet("sheet31", []string{"e", "f"}, [][]string{{"5", "6"}})
+	excel.AddSheet(NewSheet("人员",
+		WithSheetHead([]string{"name", "age"}),
+		WithSheetHeadWidth([]int{10, 10}),
+		WithSheetData([][]string{
+			{"tom", "18"},
+			{"jerry", "20"},
+		}),
+	))
 
 	if err := excel.Save(); err != nil {
 		t.Fatal(err)
