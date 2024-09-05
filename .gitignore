@@ -169,3 +169,5 @@ getui/config.yaml
 excel/test.xlsx
 excel/~$test.xlsx
 temp/
+excel/v2/test.xlsx
+excel/v2/~$test.xlsx
