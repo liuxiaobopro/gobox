@@ -118,11 +118,20 @@ func (w *Write) AddSheet(s *Sheet) *Write {
 	// 设置数据
 	for i, v := range s.Data {
 		for j, k := range v {
-			col := 'A' + j
-			if err := w.f.SetCellValue(s.Name, fmt.Sprintf("%c%d", col, i+2), k); err != nil {
-				w.err = err
+			var cell string
+
+			if j < 26 {
+				cell = fmt.Sprintf("%c%d", 'A'+j, i+2)
+			} else if j < 52 {
+				cell = fmt.Sprintf("A%c%d", 'A'+j-26, i+2)
+			} else if j < 78 {
+				cell = fmt.Sprintf("B%c%d", 'A'+j-52, i+2)
+			} else {
+				w.err = fmt.Errorf("太多列啦")
 				return w
 			}
+
+			_ = w.f.SetCellValue(s.Name, cell, k)
 		}
 	}
 
