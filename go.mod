@@ -13,6 +13,7 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/qiniu/go-sdk/v7 v7.15.0
+	github.com/robfig/cron/v3 v3.0.1
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
 	github.com/spf13/viper v1.16.0
 	github.com/streadway/amqp v0.0.0-20190827072141-edfb9018d271

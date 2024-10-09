@@ -98,6 +98,10 @@ func (w *Write) AddSheet(s *Sheet) *Write {
 			cell = fmt.Sprintf("A%c1", 'A'+i-26)
 		} else if i < 78 {
 			cell = fmt.Sprintf("B%c1", 'A'+i-52)
+		} else if i < 104 {
+			cell = fmt.Sprintf("C%c1", 'A'+i-78)
+		} else if i < 130 {
+			cell = fmt.Sprintf("D%c1", 'A'+i-104)
 		} else {
 			w.err = fmt.Errorf("太多列啦")
 			return w
