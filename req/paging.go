@@ -11,8 +11,10 @@ type ListNoRequiredSize struct {
 }
 
 type ListNoRequired struct {
-	Page     int `json:"page" form:"page" uri:"page"`
-	Size     int `json:"size" form:"size" uri:"size"`
+	Page int `json:"page" form:"page" uri:"page"`
+	Size int `json:"size" form:"size" uri:"size"`
+
+	PageNum  int `json:"page_num" form:"page_num" uri:"page_num"`
 	PageSize int `json:"page_size" form:"page_size" uri:"page_size"`
 }
 
