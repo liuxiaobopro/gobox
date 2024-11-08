@@ -35,6 +35,10 @@ func SetDefault(in interface{}) {
 
 		tagValue := tag.Get("default")
 		if tagValue != "" {
+			if !field.IsZero() {
+				continue
+			}
+
 			switch field.Kind() {
 			case reflect.String:
 				field.SetString(tagValue)
