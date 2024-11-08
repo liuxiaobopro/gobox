@@ -4,6 +4,7 @@ import (
 	"mime/multipart"
 	"net/http"
 
+	"github.com/liuxiaobopro/gobox"
 	replyx "github.com/liuxiaobopro/gobox/reply"
 
 	"github.com/gin-gonic/gin"
@@ -21,7 +22,13 @@ type GinHandle struct{}
 // var r req.DemoGetReq
 // /user?name=xxx => ShouldBind(c, &r)
 func (*GinHandle) ShouldBind(c *gin.Context, s interface{}) error {
-	return c.ShouldBind(s)
+	if err := c.ShouldBind(s); err != nil {
+		return err
+	}
+
+	gobox.SetDefault(s)
+
+	return nil
 }
 
 // ShouldBindJSON Post绑定到结构体
@@ -34,7 +41,13 @@ func (*GinHandle) ShouldBind(c *gin.Context, s interface{}) error {
 // var r req.DemoPostReq
 // /user => ShouldBindJSON(c, &r)
 func (*GinHandle) ShouldBindJSON(c *gin.Context, s interface{}) error {
-	return c.ShouldBindJSON(s)
+	if err := c.ShouldBindJSON(s); err != nil {
+		return err
+	}
+
+	gobox.SetDefault(s)
+
+	return nil
 }
 
 // ShouldBindUri 路由参数绑定到结构体
@@ -47,7 +60,13 @@ func (*GinHandle) ShouldBindJSON(c *gin.Context, s interface{}) error {
 // var r req.DemoUriReq
 // /user/:id => ShouldBindUri(c, &r)
 func (*GinHandle) ShouldBindUri(c *gin.Context, s interface{}) error {
-	return c.ShouldBindUri(s)
+	if err := c.ShouldBindUri(s); err != nil {
+		return err
+	}
+
+	gobox.SetDefault(s)
+
+	return nil
 }
 
 // Param 获取路由参数
