@@ -102,6 +102,10 @@ func (w *Write) AddSheet(s *Sheet) *Write {
 			cell = fmt.Sprintf("C%c1", 'A'+i-78)
 		} else if i < 130 {
 			cell = fmt.Sprintf("D%c1", 'A'+i-104)
+		} else if i < 156 {
+			cell = fmt.Sprintf("E%c1", 'A'+i-130)
+		} else if i < 182 {
+			cell = fmt.Sprintf("F%c1", 'A'+i-156)
 		} else {
 			w.err = fmt.Errorf("太多列啦")
 			return w
@@ -130,6 +134,14 @@ func (w *Write) AddSheet(s *Sheet) *Write {
 				cell = fmt.Sprintf("A%c%d", 'A'+j-26, i+2)
 			} else if j < 78 {
 				cell = fmt.Sprintf("B%c%d", 'A'+j-52, i+2)
+			} else if j < 104 {
+				cell = fmt.Sprintf("C%c%d", 'A'+j-78, i+2)
+			} else if j < 130 {
+				cell = fmt.Sprintf("D%c%d", 'A'+j-104, i+2)
+			} else if j < 156 {
+				cell = fmt.Sprintf("E%c%d", 'A'+j-130, i+2)
+			} else if j < 182 {
+				cell = fmt.Sprintf("F%c%d", 'A'+j-156, i+2)
 			} else {
 				w.err = fmt.Errorf("太多列啦")
 				return w
