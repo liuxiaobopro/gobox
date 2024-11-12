@@ -35,6 +35,10 @@ func (t Time) IsZero() bool {
 }
 
 func (t Time) Format(layout string) string {
+	if t.IsZero() {
+		return ""
+	}
+
 	return time.Time(t).Format(layout)
 }
 
