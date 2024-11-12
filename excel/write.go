@@ -60,22 +60,43 @@ func (w *Write) Write() (string, error) {
 		return "", err
 	}
 
-	// 设置表头
+	// 设置表头    A   AA  BA  CA 都是1
 	for i, v := range w.Head {
-		col := 'A' + i
+		var col string
+		if i < 26 {
+			col = string('A' + i)
+		} else if i < 52 {
+			col = "A" + string('A'+i-26)
+		} else if i < 78 {
+			col = "B" + string('A'+i-52)
+		} else {
+			col = "C" + string('A'+i-78)
+		}
+
+		// col := 'A' + i
 		// accii to string
-		_ = f.SetCellValue(w.Sheet, fmt.Sprintf("%c1", col), v)
+		_ = f.SetCellValue(w.Sheet, col+"1", v)
 		// 设置宽度
 		if len(w.HeadWidth) > 0 {
-			_ = f.SetColWidth(w.Sheet, fmt.Sprintf("%c", col), fmt.Sprintf("%c", col), float64(w.HeadWidth[i]))
+			_ = f.SetColWidth(w.Sheet, col, col, float64(w.HeadWidth[i]))
 		}
 	}
 
 	// 设置数据
 	for i, v := range w.Data {
 		for j, k := range v {
-			col := 'A' + j
-			_ = f.SetCellValue(w.Sheet, fmt.Sprintf("%c%d", col, i+2), k)
+			var col string
+			if i < 26 {
+				col = string('A' + j)
+			} else if i < 52 {
+				col = "A" + string('A'+j-26)
+			} else if i < 78 {
+				col = "B" + string('A'+j-52)
+			} else {
+				col = "C" + string('A'+j-78)
+			}
+			// col := 'A' + j
+			_ = f.SetCellValue(w.Sheet, fmt.Sprintf("%s%d", col, i+2), k)
 		}
 	}
 
