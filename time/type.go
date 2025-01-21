@@ -42,6 +42,14 @@ func (t Time) Format(layout string) string {
 	return time.Time(t).Format(layout)
 }
 
+func (t Time) Unix() int64 {
+	if t.IsZero() {
+		return 0
+	}
+
+	return t.Raw().Unix()
+}
+
 // Raw 返回原始time.Time
 func (t Time) Raw() time.Time {
 	return time.Time(t)
