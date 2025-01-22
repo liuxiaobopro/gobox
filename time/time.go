@@ -63,6 +63,20 @@ func StringToTime(t string) Time {
 	return Time(tt)
 }
 
+// StringToDate 将时间字符串转换为time
+// 例如: 2019-06-09 -> time
+func StringToDate(t string) Time {
+	loc, err := time.LoadLocation("Local") // 获取时区(中国上海; TimeZoneSH)
+	if err != nil {
+		panic(err)
+	}
+	tt, err := time.ParseInLocation(FormatDate, t, loc)
+	if err != nil {
+		panic(err)
+	}
+	return Time(tt)
+}
+
 // NowTimeStr 获取当前时间字符串
 // 例如: 2019-06-09 00:00:00
 func NowTimeStr() string {
